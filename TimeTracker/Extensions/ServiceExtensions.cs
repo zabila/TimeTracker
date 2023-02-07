@@ -1,9 +1,9 @@
-﻿using Repository;
+﻿using Contracts;
+using LoggerService;
+using Repository;
+using Microsoft.EntityFrameworkCore;
 
 namespace TimeTracker.Extensions;
-
-using Contracts;
-using LoggerService;
 
 public static class ServiceExtensions
 {
@@ -27,7 +27,11 @@ public static class ServiceExtensions
     {
         services.AddSingleton<ILoggerManager, LoggerManager>();
     }
-    
+
     public static void ConfigureRepositoryManager(this IServiceCollection services) =>
         services.AddScoped<IRepositoryManager, RepositoryManager>();
+
+    public static void ConfigureSqlContext(this IServiceCollection services, IConfiguration configuration) =>
+        services.AddDbContext<RepositoryContext>(opts =>
+            opts.UseSqlServer(configuration.GetConnectionString("sqlConnection")));
 }
