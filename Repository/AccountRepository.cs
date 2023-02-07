@@ -9,4 +9,9 @@ public sealed class AccountRepository : RepositoryBase<Account>, IAccountsReposi
         : base(repositoryContext)
     {
     }
+
+    public IEnumerable<Account> GetAllAccounts(bool trackChanges) =>
+        FindAll(trackChanges)
+            .OrderBy(ac => ac.Name)
+            .ToList();
 }

@@ -7,9 +7,10 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\LoggerService\LoggerService.csproj" />
-        <ProjectReference Include="..\Repository\Repository.csproj" />
+        <ProjectReference Include="..\LoggerService\LoggerService.csproj"/>
+        <ProjectReference Include="..\Repository\Repository.csproj"/>
         <ProjectReference Include="..\Service\Service.csproj"/>
+        <ProjectReference Include="..\TimeTracker.Presentation\TimeTracker.Presentation.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
