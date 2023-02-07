@@ -10,7 +10,7 @@ public class TimeTrackerController : ControllerBase
 {
     private readonly ILoggerManager _logger;
     private readonly IRepositoryManager _repository;
-    
+
     TimeTrackerController(ILoggerManager logger, IRepositoryManager repository)
     {
         _logger = logger;
@@ -25,6 +25,6 @@ public class TimeTrackerController : ControllerBase
         _logger.LogError("Here is error message from our values controller.");
         _logger.LogWarn("Here is warn message from our values controller.");
 
-        return new string[] {"value1", "value2"};
+        return new string[] { "value1", "value2" };
     }
 }
