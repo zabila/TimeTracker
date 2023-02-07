@@ -14,4 +14,8 @@ public sealed class AccountRepository : RepositoryBase<Account>, IAccountsReposi
         FindAll(trackChanges)
             .OrderBy(ac => ac.Name)
             .ToList();
+
+    public Account? GetAccount(int accountId, bool trackChanges) =>
+        FindByCondition(ac => ac.Id.Equals(accountId), trackChanges)
+            .SingleOrDefault();
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Entities.Exceptions;
+using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 
 namespace TimeTracker.Presentation.Controllers;
@@ -16,5 +17,15 @@ public class TimeTrackerController : ControllerBase
     {
         var accounts = _service.Accounts.GetAllAccounts(false);
         return Ok(accounts);
+    }
+
+    [HttpGet("{id:int}")]
+    public IActionResult GetAccount(int id)
+    {
+        var account = _service.Accounts.GetAccount(id, false);
+        if (account is null)
+            throw new AccountNotFoundException(id);
+
+        return Ok(account);
     }
 }

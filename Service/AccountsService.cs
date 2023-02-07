@@ -21,4 +21,17 @@ internal sealed class AccountsService : IAccountsService
         var accountsDto = accounts.Select(ac => new AccountDto(ac.Name, ac.Type));
         return accountsDto;
     }
+
+    public AccountDto? GetAccount(int accountId, bool trackChanges)
+    {
+        var account = _repository.Accounts.GetAccount(accountId, trackChanges);
+        if (account is null)
+        {
+            _logger.LogInfo($"Account with id: {accountId} doesn't exist in the database.");
+            return null;
+        }
+
+        var accountDto = new AccountDto(account.Name, account.Type);
+        return accountDto;
+    }
 }
