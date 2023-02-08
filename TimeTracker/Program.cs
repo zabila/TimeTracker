@@ -20,6 +20,8 @@ builder.Services.ConfigureServiceManager();
 builder.Services.AddControllers()
     .AddApplicationPart(typeof(TimeTracker.Presentation.AssemblyReference).Assembly);
 
+builder.Services.AddAutoMapper(typeof(Program));
+
 var app = builder.Build();
 
 var logger = app.Services.GetRequiredService<ILoggerManager>();

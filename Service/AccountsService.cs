@@ -1,4 +1,5 @@
-﻿using Contracts;
+﻿using AutoMapper;
+using Contracts;
 using Shared.DataTransferObjects;
 using Service.Contracts;
 
@@ -8,17 +9,19 @@ internal sealed class AccountsService : IAccountsService
 {
     private readonly IRepositoryManager _repository;
     private readonly ILoggerManager _logger;
+    private readonly IMapper _mapper;
 
-    public AccountsService(ILoggerManager logger, IRepositoryManager repository)
+    public AccountsService(ILoggerManager logger, IRepositoryManager repository, IMapper mapper)
     {
         _logger = logger;
         _repository = repository;
+        _mapper = mapper;
     }
 
     public IEnumerable<AccountDto> GetAllAccounts(bool trackChanges)
     {
         var accounts = _repository.Accounts.GetAllAccounts(trackChanges);
-        var accountsDto = accounts.Select(ac => new AccountDto(ac.Name, ac.Type));
+        var accountsDto = _mapper.Map<IEnumerable<AccountDto>>(accounts);
         return accountsDto;
     }
 
@@ -31,7 +34,7 @@ internal sealed class AccountsService : IAccountsService
             return null;
         }
 
-        var accountDto = new AccountDto(account.Name, account.Type);
+        var accountDto = _mapper.Map<AccountDto>(account);
         return accountDto;
     }
 }
