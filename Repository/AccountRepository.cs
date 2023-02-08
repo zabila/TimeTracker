@@ -10,12 +10,9 @@ public sealed class AccountRepository : RepositoryBase<Account>, IAccountsReposi
     {
     }
 
-    public IEnumerable<Account> GetAllAccounts(bool trackChanges) =>
-        FindAll(trackChanges)
-            .OrderBy(ac => ac.Name)
-            .ToList();
+    public IEnumerable<Account> GetAllAccounts(bool trackChanges) => FindAll(trackChanges).ToList();
 
-    public Account? GetAccount(int accountId, bool trackChanges) =>
+    public Account? GetAccount(Guid accountId, bool trackChanges) =>
         FindByCondition(ac => ac.Id.Equals(accountId), trackChanges)
             .SingleOrDefault();
 }

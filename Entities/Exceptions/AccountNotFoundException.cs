@@ -2,7 +2,7 @@
 
 public sealed class AccountNotFoundException : NotFoundException
 {
-    public AccountNotFoundException(int accountId)
+    public AccountNotFoundException(Guid accountId)
         : base($"Account with id: {accountId} was not found.")
     {
     }

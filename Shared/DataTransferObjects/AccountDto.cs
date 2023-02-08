@@ -1,3 +1,8 @@
 ﻿namespace Shared.DataTransferObjects;
 
-public record AccountDto(string? Name, int Type);
+public record AccountDto(
+    Guid Id, 
+    string UserName,
+    string FirstName,
+    string LastName,
+    int Type);

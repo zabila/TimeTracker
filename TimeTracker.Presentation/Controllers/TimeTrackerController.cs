@@ -19,8 +19,8 @@ public class TimeTrackerController : ControllerBase
         return Ok(accounts);
     }
 
-    [HttpGet("{id:int}")]
-    public IActionResult GetAccount(int id)
+    [HttpGet("{id:Guid}")]
+    public IActionResult GetAccount(Guid id)
     {
         var account = _service.Accounts.GetAccount(id, false);
         if (account is null)

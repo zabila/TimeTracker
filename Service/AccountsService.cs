@@ -25,7 +25,7 @@ internal sealed class AccountsService : IAccountsService
         return accountsDto;
     }
 
-    public AccountDto? GetAccount(int accountId, bool trackChanges)
+    public AccountDto? GetAccount(Guid accountId, bool trackChanges)
     {
         var account = _repository.Accounts.GetAccount(accountId, trackChanges);
         if (account is null)

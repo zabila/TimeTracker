@@ -14,6 +14,7 @@ public class RepositoryContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfiguration(new AccountsConfiguration());
+        modelBuilder.ApplyConfiguration(new ClockworkTaskConfiguration());
     }
 
     public DbSet<Account>? Accounts { get; set; }

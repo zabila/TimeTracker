@@ -5,15 +5,28 @@ namespace Entities.Models;
 
 public class Account
 {
-    [Column("AccountId")] public int Id { get; set; }
-
-    [Required(ErrorMessage = "Name is required")]
+    [Key]
+    [Column("AccountId")] 
+    public Guid Id { get; set; }
+    
+    public string? ClockworkAccountId { get; set; }
+    
+    [Required(ErrorMessage = "UserName is required")]
+    public string? UserName { get; set; }
+    
+    [Required(ErrorMessage = "Password is required")]
+    public string? Password { get; set; }
+    
     [MaxLength(100, ErrorMessage = "Maximum length for the Name is 100 characters")]
-    public string? Name { get; set; }
-
-    [Required(ErrorMessage = "Address is required")]
+    public string? FirstName { get; set; }
+    
+    [MaxLength(100, ErrorMessage = "Maximum length for the Name is 100 characters")]
+    public string? LastName { get; set; }
+    
     public int Type { get; set; }
 
-    [MaxLength(100, ErrorMessage = "Maximum length for the Token is 100 characters")]
-    public string? Token { get; set; } = null!;
+    [MaxLength(100, ErrorMessage = "Maximum length for the AuthorizationToken is 100 characters")]
+    public string? AuthorizationToken { get; set; } = null!;
+    
+    public ICollection<Account>? Tasks { get; set; }
 }
