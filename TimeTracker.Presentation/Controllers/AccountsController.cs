@@ -6,11 +6,11 @@ namespace TimeTracker.Presentation.Controllers;
 
 [Route("api/accounts")]
 [ApiController]
-public class TimeTrackerController : ControllerBase
+public class AccountsController : ControllerBase
 {
     private readonly IServiceManager _service;
 
-    public TimeTrackerController(IServiceManager serviceManager) => _service = serviceManager;
+    public AccountsController(IServiceManager serviceManager) => _service = serviceManager;
 
     [HttpGet]
     public IActionResult GetAccounts()
