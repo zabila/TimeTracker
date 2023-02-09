@@ -10,5 +10,6 @@ public class MappingProfile : Profile
     {
         CreateMap<Account, AccountDto>();
         CreateMap<ClockworkTask, ClockworkTaskDto>();
+        CreateMap<AccountForCreationDto, Account>();
     }
 }

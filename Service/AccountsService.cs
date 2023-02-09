@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Contracts;
+using Entities.Models;
 using Shared.DataTransferObjects;
 using Service.Contracts;
 
@@ -36,5 +37,16 @@ internal sealed class AccountsService : IAccountsService
 
         var accountDto = _mapper.Map<AccountDto>(account);
         return accountDto;
+    }
+
+    public AccountDto CreateAccount(AccountForCreationDto account)
+    {
+        var accountEntity = _mapper.Map<Account>(account);
+
+        _repository.Accounts.CreateAccount(accountEntity);
+        _repository.Save();
+
+        var accountToReturn = _mapper.Map<AccountDto>(accountEntity);
+        return accountToReturn;
     }
 }

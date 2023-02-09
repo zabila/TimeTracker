@@ -1,10 +1,12 @@
 ﻿namespace Shared.DataTransferObjects;
 
-public record AccountDto
+public record AccountForCreationDto
 {
-    public Guid Id { get; init; }
     public string? UserName { get; init; }
+    public string? ClockworkAccountId { get; init; }
     public string? FirstName { get; init; }
     public string? LastName { get; init; }
+    public string? Password { get; init; }
     public int Type { get; init; }
+    public string? AuthorizationToken { get; init; }
 }

@@ -15,4 +15,6 @@ public sealed class AccountRepository : RepositoryBase<Account>, IAccountsReposi
     public Account? GetAccount(Guid accountId, bool trackChanges) =>
         FindByCondition(ac => ac.Id.Equals(accountId), trackChanges)
             .SingleOrDefault();
+
+    public void CreateAccount(Account account) => Create(account);
 }

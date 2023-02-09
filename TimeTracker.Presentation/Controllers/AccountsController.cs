@@ -1,6 +1,7 @@
 ﻿using Entities.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
+using Shared.DataTransferObjects;
 
 namespace TimeTracker.Presentation.Controllers;
 
@@ -19,7 +20,7 @@ public class AccountsController : ControllerBase
         return Ok(accounts);
     }
 
-    [HttpGet("{id:Guid}")]
+    [HttpGet("{id:Guid}", Name = "AccountById")]
     public IActionResult GetAccount(Guid id)
     {
         var account = _service.Accounts.GetAccount(id, false);
@@ -27,5 +28,14 @@ public class AccountsController : ControllerBase
             throw new AccountNotFoundException(id);
 
         return Ok(account);
+    }
+
+    public IActionResult CreateAccount([FromBody] AccountForCreationDto? account)
+    {
+        if (account is null)
+            return BadRequest("AccountForCreationDto object is null");
+
+        var accountEntity = _service.Accounts.CreateAccount(account);
+        return CreatedAtRoute("AccountById", new { id = accountEntity.Id }, accountEntity);
     }
 }
