@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Contracts;
 using Entities.Exceptions;
+using Entities.Models;
 using Service.Contracts;
 using Shared.DataTransferObjects;
 
@@ -37,6 +38,20 @@ public class ClockworkTasksService : IClockworkTasksService
             throw new ClockworkTaskNotFoundException(id);
 
         var clockworkTaskDto = _mapper.Map<ClockworkTaskDto>(clockworkTask);
+        return clockworkTaskDto;
+    }
+
+    public ClockworkTaskDto CreateClockworkTask(Guid accountId, ClockworkTaskForCreationDto clockworkTask, bool trackChanges)
+    {
+        var account = _repository.Accounts.GetAccount(accountId, trackChanges);
+        if (account is null)
+            throw new AccountNotFoundException(accountId);
+
+        var clockworkTaskEntity = _mapper.Map<ClockworkTask>(clockworkTask);
+        _repository.ClockworkTasks.CreateClockworkTask(accountId, clockworkTaskEntity);
+        _repository.Save();
+
+        var clockworkTaskDto = _mapper.Map<ClockworkTaskDto>(clockworkTaskEntity);
         return clockworkTaskDto;
     }
 }

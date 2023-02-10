@@ -16,4 +16,10 @@ public class ClockworkTasksRepository : RepositoryBase<ClockworkTask>, IClockwor
     public ClockworkTask? GetClockworkTask(Guid accountId, Guid id, bool trackChanges)
         => FindByCondition(ac => ac.Id.Equals(id) && ac.AccountId.Equals(accountId), trackChanges)
             .SingleOrDefault();
+
+    public void CreateClockworkTask(Guid accountId, ClockworkTask clockworkTask)
+    {
+        clockworkTask.AccountId = accountId;
+        Create(clockworkTask);
+    }
 }

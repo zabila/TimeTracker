@@ -30,6 +30,7 @@ public class AccountsController : ControllerBase
         return Ok(account);
     }
 
+    [HttpPost]
     public IActionResult CreateAccount([FromBody] AccountForCreationDto? account)
     {
         if (account is null)
