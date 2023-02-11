@@ -9,4 +9,5 @@ public interface IAccountsService
     AccountDto? GetAccount(Guid accountId, bool trackChanges);
 
     AccountDto CreateAccount(AccountForCreationDto account);
+    void DeleteAccount(Guid accountId);
 }

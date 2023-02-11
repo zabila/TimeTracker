@@ -23,10 +23,12 @@ public class ClockworkTasksRepository : RepositoryBase<ClockworkTask>, IClockwor
         Create(clockworkTask);
     }
 
+    public void DeleteClockworkTask(ClockworkTask clockworkTask) => Delete(clockworkTask);
+
     public IEnumerable<ClockworkTask> GetClockworkTasksByIds(Guid accountId, IEnumerable<Guid> ids, bool trackChanges)
     {
         var tasksByAccountId = FindByCondition(ac => ac.AccountId.Equals(accountId), trackChanges).ToList();
         var tasksByIds = tasksByAccountId.Where(id => ids.Contains(id.Id)).ToList();
-        return tasksByIds; 
+        return tasksByIds;
     }
 }

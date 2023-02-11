@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Contracts;
+using Entities.Exceptions;
 using Entities.Models;
 using Shared.DataTransferObjects;
 using Service.Contracts;
@@ -48,5 +49,15 @@ internal sealed class AccountsService : IAccountsService
 
         var accountToReturn = _mapper.Map<AccountDto>(accountEntity);
         return accountToReturn;
+    }
+
+    public void DeleteAccount(Guid accountId)
+    {
+        var account = _repository.Accounts.GetAccount(accountId, false);
+        if (account is null)
+            throw new AccountNotFoundException(accountId);
+
+        _repository.Accounts.DeleteAccount(account);
+        _repository.Save();
     }
 }

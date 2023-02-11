@@ -17,4 +17,5 @@ public sealed class AccountRepository : RepositoryBase<Account>, IAccountsReposi
             .SingleOrDefault();
 
     public void CreateAccount(Account account) => Create(account);
+    public void DeleteAccount(Account account) => Delete(account);
 }

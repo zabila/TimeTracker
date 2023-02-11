@@ -39,4 +39,11 @@ public class AccountsController : ControllerBase
         var accountEntity = _service.Accounts.CreateAccount(account);
         return CreatedAtRoute("AccountById", new { id = accountEntity.Id }, accountEntity);
     }
+
+    [HttpDelete("{accountId:guid}")]
+    public IActionResult DeleteAccount(Guid accountId)
+    {
+        _service.Accounts.DeleteAccount(accountId);
+        return NoContent();
+    }
 }

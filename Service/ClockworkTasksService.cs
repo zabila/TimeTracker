@@ -54,6 +54,21 @@ public class ClockworkTasksService : IClockworkTasksService
         var clockworkTaskDto = _mapper.Map<ClockworkTaskDto>(clockworkTaskEntity);
         return clockworkTaskDto;
     }
+
+    public void DeleteClockworkTask(Guid accountId, Guid id, bool trackChanges)
+    {
+        var account = _repository.Accounts.GetAccount(accountId, trackChanges);
+        if (account is null)
+            throw new AccountNotFoundException(accountId);
+
+        var accountForTask = _repository.ClockworkTasks.GetClockworkTask(accountId, id, trackChanges);
+        if (accountForTask is null)
+            throw new ClockworkTaskNotFoundException(id);
+
+        _repository.ClockworkTasks.DeleteClockworkTask(accountForTask);
+        _repository.Save();
+    }
+
     public IEnumerable<ClockworkTaskDto> GetClockworkTasksCollection(Guid accountId, IEnumerable<Guid> ids, bool trackChanges)
     {
         if (ids is null)

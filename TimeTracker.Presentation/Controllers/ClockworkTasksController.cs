@@ -27,9 +27,9 @@ public class ClockworkTasksController : ControllerBase
         var clockworkTask = _service.ClockworkTasks.GetClockworkTask(accountId, id, false);
         return Ok(clockworkTask);
     }
-    
+
     [HttpGet("collection/({ids})", Name = "ClockworkTasksCollection")]
-    public IActionResult GetCollectionByIds(Guid accountId, [ModelBinder(BinderType = typeof(ArrayModelBinder))]IEnumerable<Guid> ids)
+    public IActionResult GetCollectionByIds(Guid accountId, [ModelBinder(BinderType = typeof(ArrayModelBinder))] IEnumerable<Guid> ids)
     {
         var tasks = _service.ClockworkTasks.GetClockworkTasksCollection(accountId, ids, false);
         return Ok(tasks);
@@ -43,5 +43,12 @@ public class ClockworkTasksController : ControllerBase
 
         var clockworkToReturn = _service.ClockworkTasks.CreateClockworkTask(accountId, clockworkTask, false);
         return CreatedAtRoute("GetClockworkForAccount", new { accountId, id = clockworkToReturn.Id }, clockworkToReturn);
+    }
+
+    [HttpDelete("{id:guid}")]
+    public IActionResult DeleteClockworkTask(Guid accountId, Guid id)
+    {
+        _service.ClockworkTasks.DeleteClockworkTask(accountId, id, false);
+        return NoContent();
     }
 }
