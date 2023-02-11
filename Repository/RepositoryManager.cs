@@ -19,4 +19,5 @@ public sealed class RepositoryManager : IRepositoryManager
     public IClockworkTasksRepository ClockworkTasks => _clockworkTasksRepository.Value;
 
     public void Save() => _repositoryContext.SaveChanges();
+    public async Task SaveAsync() => await _repositoryContext.SaveChangesAsync();
 }

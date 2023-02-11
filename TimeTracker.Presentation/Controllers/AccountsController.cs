@@ -14,16 +14,16 @@ public class AccountsController : ControllerBase
     public AccountsController(IServiceManager serviceManager) => _service = serviceManager;
 
     [HttpGet]
-    public IActionResult GetAccounts()
+    public async Task<IActionResult> GetAccounts()
     {
-        var accounts = _service.Accounts.GetAllAccounts(false);
+        var accounts = await _service.Accounts.GetAllAccountsAsync(false);
         return Ok(accounts);
     }
 
     [HttpGet("{id:Guid}", Name = "AccountById")]
-    public IActionResult GetAccount(Guid id)
+    public async Task<IActionResult> GetAccount(Guid id)
     {
-        var account = _service.Accounts.GetAccount(id, false);
+        var account = await _service.Accounts.GetAccountAsync(id, false);
         if (account is null)
             throw new AccountNotFoundException(id);
 
@@ -31,29 +31,29 @@ public class AccountsController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult CreateAccount([FromBody] AccountForCreationDto? account)
+    public async Task<IActionResult> CreateAccount([FromBody] AccountForCreationDto? account)
     {
         if (account is null)
             return BadRequest("AccountForCreationDto object is null");
 
-        var accountEntity = _service.Accounts.CreateAccount(account);
+        var accountEntity = await _service.Accounts.CreateAccountAsync(account);
         return CreatedAtRoute("AccountById", new { id = accountEntity.Id }, accountEntity);
     }
 
     [HttpDelete("{accountId:guid}")]
-    public IActionResult DeleteAccount(Guid accountId)
+    public async Task<IActionResult> DeleteAccount(Guid accountId)
     {
-        _service.Accounts.DeleteAccount(accountId);
+        await _service.Accounts.DeleteAccountAsync(accountId);
         return NoContent();
     }
 
     [HttpPut("{accountId:guid}")]
-    public IActionResult UpdateAccount(Guid accountId, AccountForUpdateDto accountForUpdateDto)
+    public async Task<IActionResult> UpdateAccount(Guid accountId, AccountForUpdateDto accountForUpdateDto)
     {
         if (!ModelState.IsValid)
             return UnprocessableEntity(ModelState);
 
-        _service.Accounts.UpdateAccount(accountId, accountForUpdateDto, true);
+        await _service.Accounts.UpdateAccountAsync(accountId, accountForUpdateDto, true);
         return NoContent();
     }
 }

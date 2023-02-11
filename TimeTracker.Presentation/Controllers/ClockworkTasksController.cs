@@ -15,50 +15,50 @@ public class ClockworkTasksController : ControllerBase
     public ClockworkTasksController(IServiceManager serviceManager) => _service = serviceManager;
 
     [HttpGet]
-    public IActionResult GetClockworkTasksForAccount(Guid accountId)
+    public async Task<IActionResult> GetClockworkTasksForAccount(Guid accountId)
     {
-        var clockworkTasks = _service.ClockworkTasks.GetAllClockworkTasks(accountId, false);
+        var clockworkTasks = await _service.ClockworkTasks.GetAllClockworkTasksAsync(accountId, false);
         return Ok(clockworkTasks);
     }
 
     [HttpGet("{id:Guid}", Name = "GetClockworkForAccount")]
-    public IActionResult GetClockworkTaskForAccount(Guid accountId, Guid id)
+    public async Task<IActionResult> GetClockworkTaskForAccount(Guid accountId, Guid id)
     {
-        var clockworkTask = _service.ClockworkTasks.GetClockworkTask(accountId, id, false);
+        var clockworkTask = await _service.ClockworkTasks.GetClockworkTaskAsync(accountId, id, false);
         return Ok(clockworkTask);
     }
 
     [HttpGet("collection/({ids})", Name = "ClockworkTasksCollection")]
-    public IActionResult GetCollectionByIds(Guid accountId, [ModelBinder(BinderType = typeof(ArrayModelBinder))] IEnumerable<Guid> ids)
+    public async Task<IActionResult> GetCollectionByIds(Guid accountId, [ModelBinder(BinderType = typeof(ArrayModelBinder))] IEnumerable<Guid> ids)
     {
-        var tasks = _service.ClockworkTasks.GetClockworkTasksCollection(accountId, ids, false);
+        var tasks = await _service.ClockworkTasks.GetClockworkTasksCollectionAsync(accountId, ids, false);
         return Ok(tasks);
     }
 
     [HttpPost]
-    public IActionResult CreateClockworkTask(Guid accountId, [FromBody] ClockworkTaskForCreationDto? clockworkTask)
+    public async Task<IActionResult> CreateClockworkTask(Guid accountId, [FromBody] ClockworkTaskForCreationDto? clockworkTask)
     {
         if (clockworkTask is null)
             return BadRequest("ClockworkTaskForCreationDto object is null");
 
-        var clockworkToReturn = _service.ClockworkTasks.CreateClockworkTask(accountId, clockworkTask, false);
+        var clockworkToReturn = await _service.ClockworkTasks.CreateClockworkTaskAsync(accountId, clockworkTask, false);
         return CreatedAtRoute("GetClockworkForAccount", new { accountId, id = clockworkToReturn.Id }, clockworkToReturn);
     }
 
     [HttpDelete("{id:guid}")]
-    public IActionResult DeleteClockworkTask(Guid accountId, Guid id)
+    public async Task<IActionResult> DeleteClockworkTask(Guid accountId, Guid id)
     {
-        _service.ClockworkTasks.DeleteClockworkTask(accountId, id, false);
+        await _service.ClockworkTasks.DeleteClockworkTaskAsync(accountId, id, false);
         return NoContent();
     }
 
     [HttpPut("{id:guid}")]
-    public IActionResult UpdateClockworkTask(Guid accountId, Guid id, [FromBody] ClockworkTaskForUpdateDto? clockworkTaskForUpdateDto)
+    public async Task<IActionResult> UpdateClockworkTask(Guid accountId, Guid id, [FromBody] ClockworkTaskForUpdateDto? clockworkTaskForUpdateDto)
     {
         if (clockworkTaskForUpdateDto is null)
             return BadRequest("ClockworkTaskForUpdateDto object is null");
 
-        _service.ClockworkTasks.UpdateClockworkTask(accountId, id, clockworkTaskForUpdateDto, false, true);
+        await _service.ClockworkTasks.UpdateClockworkTaskAsync(accountId, id, clockworkTaskForUpdateDto, false, true);
 
         return NoContent();
     }
