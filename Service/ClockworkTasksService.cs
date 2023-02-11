@@ -54,4 +54,16 @@ public class ClockworkTasksService : IClockworkTasksService
         var clockworkTaskDto = _mapper.Map<ClockworkTaskDto>(clockworkTaskEntity);
         return clockworkTaskDto;
     }
+    public IEnumerable<ClockworkTaskDto> GetClockworkTasksCollection(Guid accountId, IEnumerable<Guid> ids, bool trackChanges)
+    {
+        if (ids is null)
+            throw new IdParametersBadRequestException();
+
+        var clockworkTasks = _repository.ClockworkTasks.GetClockworkTasksByIds(accountId, ids, false);
+        if (clockworkTasks.Count() != ids.Count())
+            throw new CollectionByIdsBadRequestException();
+
+        var clockworkTasksDto = _mapper.Map<IEnumerable<ClockworkTaskDto>>(clockworkTasks);
+        return clockworkTasksDto;
+    }
 }

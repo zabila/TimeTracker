@@ -28,5 +28,5 @@ public class Account
     [MaxLength(100, ErrorMessage = "Maximum length for the AuthorizationToken is 100 characters")]
     public string? AuthorizationToken { get; set; } = null!;
     
-    public ICollection<Account>? Tasks { get; set; }
+    public ICollection<ClockworkTask>? Tasks { get; set; }
 }

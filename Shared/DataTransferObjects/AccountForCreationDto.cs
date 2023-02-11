@@ -9,4 +9,5 @@ public record AccountForCreationDto
     public string? Password { get; init; }
     public int Type { get; init; }
     public string? AuthorizationToken { get; init; }
+    public IEnumerable<ClockworkTaskForCreationDto>? Tasks { get; init; }
 }

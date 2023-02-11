@@ -2,10 +2,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.DataTransferObjects;
+using TimeTracker.Presentation.ModelBinders;
 
 namespace TimeTracker.Presentation.Controllers;
 
-[Route("api/accounts/{accountId}/clockworktasks")]
+[Route("api/accounts/{accountId:Guid}/clockworktasks")]
 [ApiController]
 public class ClockworkTasksController : ControllerBase
 {
@@ -25,6 +26,13 @@ public class ClockworkTasksController : ControllerBase
     {
         var clockworkTask = _service.ClockworkTasks.GetClockworkTask(accountId, id, false);
         return Ok(clockworkTask);
+    }
+    
+    [HttpGet("collection/({ids})", Name = "ClockworkTasksCollection")]
+    public IActionResult GetCollectionByIds(Guid accountId, [ModelBinder(BinderType = typeof(ArrayModelBinder))]IEnumerable<Guid> ids)
+    {
+        var tasks = _service.ClockworkTasks.GetClockworkTasksCollection(accountId, ids, false);
+        return Ok(tasks);
     }
 
     [HttpPost]
