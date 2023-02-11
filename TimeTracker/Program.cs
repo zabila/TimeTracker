@@ -1,6 +1,8 @@
 using Contracts;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Formatters;
+using Microsoft.Extensions.Options;
 using TimeTracker.Extensions;
 using NLog;
 
@@ -8,10 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 LogManager.LoadConfiguration(string.Concat(Directory.GetCurrentDirectory(), "/nlog.config"));
 
-// builder.Services.Configure<ApiBehaviorOptions>(options =>
-// {
-//     options.SuppressModelStateInvalidFilter = true;
-// });
+builder.Services.Configure<ApiBehaviorOptions>(options => { options.SuppressModelStateInvalidFilter = true; });
 
 builder.Services.AddRazorPages();
 builder.Services.AddControllers();

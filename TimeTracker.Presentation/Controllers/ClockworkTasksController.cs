@@ -51,4 +51,15 @@ public class ClockworkTasksController : ControllerBase
         _service.ClockworkTasks.DeleteClockworkTask(accountId, id, false);
         return NoContent();
     }
+
+    [HttpPut("{id:guid}")]
+    public IActionResult UpdateClockworkTask(Guid accountId, Guid id, [FromBody] ClockworkTaskForUpdateDto? clockworkTaskForUpdateDto)
+    {
+        if (clockworkTaskForUpdateDto is null)
+            return BadRequest("ClockworkTaskForUpdateDto object is null");
+
+        _service.ClockworkTasks.UpdateClockworkTask(accountId, id, clockworkTaskForUpdateDto, false, true);
+
+        return NoContent();
+    }
 }

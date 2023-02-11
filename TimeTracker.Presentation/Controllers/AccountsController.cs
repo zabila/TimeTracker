@@ -46,4 +46,14 @@ public class AccountsController : ControllerBase
         _service.Accounts.DeleteAccount(accountId);
         return NoContent();
     }
+
+    [HttpPut("{accountId:guid}")]
+    public IActionResult UpdateAccount(Guid accountId, AccountForUpdateDto accountForUpdateDto)
+    {
+        if (!ModelState.IsValid)
+            return UnprocessableEntity(ModelState);
+
+        _service.Accounts.UpdateAccount(accountId, accountForUpdateDto, true);
+        return NoContent();
+    }
 }

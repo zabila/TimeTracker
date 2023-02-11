@@ -60,4 +60,14 @@ internal sealed class AccountsService : IAccountsService
         _repository.Accounts.DeleteAccount(account);
         _repository.Save();
     }
+
+    public void UpdateAccount(Guid accountId, AccountForUpdateDto accountForUpdateDto, bool trackChanges)
+    {
+        var account = _repository.Accounts.GetAccount(accountId, trackChanges);
+        if (account is null)
+            throw new AccountNotFoundException(accountId);
+
+        _mapper.Map(accountForUpdateDto, account);
+        _repository.Save();
+    }
 }

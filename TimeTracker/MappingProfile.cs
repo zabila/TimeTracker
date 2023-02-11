@@ -12,5 +12,7 @@ public class MappingProfile : Profile
         CreateMap<ClockworkTask, ClockworkTaskDto>();
         CreateMap<AccountForCreationDto, Account>();
         CreateMap<ClockworkTaskForCreationDto, ClockworkTask>();
+        CreateMap<ClockworkTaskForUpdateDto, ClockworkTask>();
+        CreateMap<AccountForUpdateDto, Account>();
     }
 }

@@ -10,4 +10,5 @@ public interface IAccountsService
 
     AccountDto CreateAccount(AccountForCreationDto account);
     void DeleteAccount(Guid accountId);
+    void UpdateAccount(Guid accountId, AccountForUpdateDto accountForUpdateDto, bool trackChanges);
 }
