@@ -22,19 +22,26 @@ internal sealed class AccountsService : IAccountsService
 
     public IEnumerable<AccountDto> GetAllAccounts(bool trackChanges)
     {
+        _logger.LogInfo("Getting all accounts");
+
         var accounts = _repository.Accounts.GetAllAccounts(trackChanges);
         var accountsDto = _mapper.Map<IEnumerable<AccountDto>>(accounts);
         return accountsDto;
+    }
+
+    private async Task<Account> GetAccountAndCheckIfItExistsAsync(Guid accountId, bool trackChanges)
+    {
+        var account = await _repository.Accounts.GetAccountAsync(accountId, trackChanges);
+        if (account is null)
+            throw new AccountNotFoundException(accountId);
+        return account;
     }
 
     public AccountDto? GetAccount(Guid accountId, bool trackChanges)
     {
         var account = _repository.Accounts.GetAccount(accountId, trackChanges);
         if (account is null)
-        {
-            _logger.LogInfo($"Account with id: {accountId} doesn't exist in the database.");
-            return null;
-        }
+            throw new AccountNotFoundException(accountId);
 
         var accountDto = _mapper.Map<AccountDto>(account);
         return accountDto;
@@ -80,13 +87,7 @@ internal sealed class AccountsService : IAccountsService
 
     public async Task<AccountDto?> GetAccountAsync(Guid accountId, bool trackChanges)
     {
-        var account = await _repository.Accounts.GetAccountAsync(accountId, trackChanges);
-        if (account is null)
-        {
-            _logger.LogInfo($"Account with id: {accountId} doesn't exist in the database.");
-            return null;
-        }
-
+        var account = await GetAccountAndCheckIfItExistsAsync(accountId, trackChanges);
         var accountDto = _mapper.Map<AccountDto>(account);
         return accountDto;
     }
@@ -104,20 +105,14 @@ internal sealed class AccountsService : IAccountsService
 
     public async Task DeleteAccountAsync(Guid accountId)
     {
-        var account = _repository.Accounts.GetAccount(accountId, false);
-        if (account is null)
-            throw new AccountNotFoundException(accountId);
-
+        var account = await GetAccountAndCheckIfItExistsAsync(accountId, false);
         _repository.Accounts.DeleteAccount(account);
         await _repository.SaveAsync();
     }
 
     public async Task UpdateAccountAsync(Guid accountId, AccountForUpdateDto accountForUpdateDto, bool trackChanges)
     {
-        var account = _repository.Accounts.GetAccount(accountId, trackChanges);
-        if (account is null)
-            throw new AccountNotFoundException(accountId);
-
+        var account = await GetAccountAndCheckIfItExistsAsync(accountId, trackChanges);
         _mapper.Map(accountForUpdateDto, account);
         await _repository.SaveAsync();
     }

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.DataTransferObjects;
+using TimeTracker.Presentation.ActionFilters;
 
 namespace TimeTracker.Presentation.Controllers;
 
@@ -31,10 +32,11 @@ public class AccountsController : ControllerBase
     }
 
     [HttpPost]
+    [ServiceFilter(typeof(ValidationFilterAttribute))]
     public async Task<IActionResult> CreateAccount([FromBody] AccountForCreationDto? account)
     {
-        if (account is null)
-            return BadRequest("AccountForCreationDto object is null");
+        if (account == null)
+            return BadRequest("ClockworkTaskForCreationDto object is null");
 
         var accountEntity = await _service.Accounts.CreateAccountAsync(account);
         return CreatedAtRoute("AccountById", new { id = accountEntity.Id }, accountEntity);
@@ -48,11 +50,9 @@ public class AccountsController : ControllerBase
     }
 
     [HttpPut("{accountId:guid}")]
+    [ServiceFilter(typeof(ValidationFilterAttribute))]
     public async Task<IActionResult> UpdateAccount(Guid accountId, AccountForUpdateDto accountForUpdateDto)
     {
-        if (!ModelState.IsValid)
-            return UnprocessableEntity(ModelState);
-
         await _service.Accounts.UpdateAccountAsync(accountId, accountForUpdateDto, true);
         return NoContent();
     }

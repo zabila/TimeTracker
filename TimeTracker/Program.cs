@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.Options;
 using TimeTracker.Extensions;
 using NLog;
+using TimeTracker.Presentation.ActionFilters;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +28,8 @@ builder.Services.AddControllers(config =>
     config.RespectBrowserAcceptHeader = true;
     config.ReturnHttpNotAcceptable = true;
 }).AddXmlDataContractSerializerFormatters();
+
+builder.Services.AddScoped<ValidationFilterAttribute>();
 
 builder.Services.AddControllers()
     .AddApplicationPart(typeof(TimeTracker.Presentation.AssemblyReference).Assembly);

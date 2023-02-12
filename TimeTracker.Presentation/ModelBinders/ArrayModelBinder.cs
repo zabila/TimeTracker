@@ -24,7 +24,13 @@ public class ArrayModelBinder : IModelBinder
             return Task.CompletedTask;
         }
 
-        var genericType = bindingContext.ModelType.GetTypeInfo().GetGenericArguments()[1];
+        if (bindingContext.ModelType.GetTypeInfo().GenericTypeArguments.Length < 1)
+        {
+            bindingContext.Result = ModelBindingResult.Failed();
+            return Task.CompletedTask;
+        }
+
+        var genericType = bindingContext.ModelType.GetTypeInfo().GetGenericArguments()[0];
         var converter = TypeDescriptor.GetConverter(genericType);
 
         var objectArray = provideValue.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries)
@@ -33,7 +39,7 @@ public class ArrayModelBinder : IModelBinder
         var guidArray = Array.CreateInstance(genericType, provideValue.Length);
         objectArray.CopyTo(guidArray, 0);
         bindingContext.Model = guidArray;
-        
+
         bindingContext.Result = ModelBindingResult.Success(bindingContext.Model);
         return Task.CompletedTask;
     }
