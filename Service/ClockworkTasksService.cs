@@ -4,40 +4,36 @@ using Entities.Exceptions;
 using Entities.Models;
 using Service.Contracts;
 using Shared.DataTransferObjects;
+using Shared.RequestFeatures;
 
 namespace Service;
 
-public class ClockworkTasksService : IClockworkTasksService
-{
+public class ClockworkTasksService : IClockworkTasksService {
     private readonly IRepositoryManager _repository;
     private readonly ILoggerManager _logger;
     private readonly IMapper _mapper;
 
-    public ClockworkTasksService(ILoggerManager logger, IRepositoryManager repository, IMapper mapper)
-    {
+    public ClockworkTasksService(ILoggerManager logger, IRepositoryManager repository, IMapper mapper) {
         _logger = logger;
         _repository = repository;
         _mapper = mapper;
     }
 
-    private async Task<Account> GetAccountAndCheckIfItExistsAsync(Guid accountId, bool trackChanges)
-    {
+    private async Task<Account> GetAccountAndCheckIfItExistsAsync(Guid accountId, bool trackChanges) {
         var account = await _repository.Accounts.GetAccountAsync(accountId, trackChanges);
         if (account is null)
             throw new AccountNotFoundException(accountId);
         return account;
     }
 
-    private Account GetAccountAndCheckIfItExists(Guid accountId, bool trackChanges)
-    {
+    private Account GetAccountAndCheckIfItExists(Guid accountId, bool trackChanges) {
         var account = _repository.Accounts.GetAccount(accountId, trackChanges);
         if (account is null)
             throw new AccountNotFoundException(accountId);
         return account;
     }
 
-    private ClockworkTask GetClockworkTaskAndCheckIfItExists(Guid accountId, Guid id, bool trackChanges)
-    {
+    private ClockworkTask GetClockworkTaskAndCheckIfItExists(Guid accountId, Guid id, bool trackChanges) {
         var account = GetAccountAndCheckIfItExists(accountId, trackChanges);
         var clockworkTask = _repository.ClockworkTasks.GetClockworkTask(accountId, id, trackChanges);
         if (clockworkTask is null)
@@ -45,8 +41,7 @@ public class ClockworkTasksService : IClockworkTasksService
         return clockworkTask;
     }
 
-    private async Task<ClockworkTask> GetClockworkTaskAndCheckIfItExistsAsync(Guid accountId, Guid id, bool trackChanges)
-    {
+    private async Task<ClockworkTask> GetClockworkTaskAndCheckIfItExistsAsync(Guid accountId, Guid id, bool trackChanges) {
         var account = await GetAccountAndCheckIfItExistsAsync(accountId, trackChanges);
         var clockworkTask = await _repository.ClockworkTasks.GetClockworkTaskAsync(accountId, id, trackChanges);
         if (clockworkTask is null)
@@ -54,22 +49,19 @@ public class ClockworkTasksService : IClockworkTasksService
         return clockworkTask;
     }
 
-    public IEnumerable<ClockworkTaskDto> GetAllClockworkTasks(Guid accountId, bool trackChanges)
-    {
+    public IEnumerable<ClockworkTaskDto> GetAllClockworkTasks(Guid accountId, bool trackChanges) {
         var clockworkTasks = _repository.ClockworkTasks.GetAllClockworkTasks(accountId, trackChanges);
         var clockworkTasksDto = _mapper.Map<IEnumerable<ClockworkTaskDto>>(clockworkTasks);
         return clockworkTasksDto;
     }
 
-    public ClockworkTaskDto? GetClockworkTask(Guid accountId, Guid id, bool trackChanges)
-    {
+    public ClockworkTaskDto? GetClockworkTask(Guid accountId, Guid id, bool trackChanges) {
         var clockworkTask = GetClockworkTaskAndCheckIfItExists(accountId, id, trackChanges);
         var clockworkTaskDto = _mapper.Map<ClockworkTaskDto>(clockworkTask);
         return clockworkTaskDto;
     }
 
-    public ClockworkTaskDto CreateClockworkTask(Guid accountId, ClockworkTaskForCreationDto clockworkTask, bool trackChanges)
-    {
+    public ClockworkTaskDto CreateClockworkTask(Guid accountId, ClockworkTaskForCreationDto clockworkTask, bool trackChanges) {
         var account = GetAccountAndCheckIfItExists(accountId, trackChanges);
 
         var clockworkTaskEntity = _mapper.Map<ClockworkTask>(clockworkTask);
@@ -80,36 +72,31 @@ public class ClockworkTasksService : IClockworkTasksService
         return clockworkTaskDto;
     }
 
-    public void DeleteClockworkTask(Guid accountId, Guid id, bool trackChanges)
-    {
+    public void DeleteClockworkTask(Guid accountId, Guid id, bool trackChanges) {
         var accountForTask = GetClockworkTaskAndCheckIfItExists(accountId, id, trackChanges);
         _repository.ClockworkTasks.DeleteClockworkTask(accountForTask);
         _repository.Save();
     }
 
-    public void UpdateClockworkTask(Guid accountId, Guid id, ClockworkTaskForUpdateDto clockworkTaskForUpdateDto, bool accTrackChanges, bool tskTrackChanges)
-    {
+    public void UpdateClockworkTask(Guid accountId, Guid id, ClockworkTaskForUpdateDto clockworkTaskForUpdateDto, bool accTrackChanges, bool tskTrackChanges) {
         var clockworkTask = GetClockworkTaskAndCheckIfItExists(accountId, id, tskTrackChanges);
         _mapper.Map(clockworkTaskForUpdateDto, clockworkTask);
         _repository.Save();
     }
 
-    public async Task<IEnumerable<ClockworkTaskDto>> GetAllClockworkTasksAsync(Guid accountId, bool trackChanges)
-    {
-        var clockworkTasks = await _repository.ClockworkTasks.GetAllClockworkTasksAsync(accountId, trackChanges);
+    public async Task<IEnumerable<ClockworkTaskDto>> GetAllClockworkTasksAsync(Guid accountId, ClockworkTasksParameters clockworkTasksParameters, bool trackChanges) {
+        var clockworkTasks = await _repository.ClockworkTasks.GetAllClockworkTasksAsync(accountId, clockworkTasksParameters, trackChanges);
         var clockworkTasksDto = _mapper.Map<IEnumerable<ClockworkTaskDto>>(clockworkTasks);
         return clockworkTasksDto;
     }
 
-    public async Task<ClockworkTaskDto?> GetClockworkTaskAsync(Guid accountId, Guid id, bool trackChanges)
-    {
+    public async Task<ClockworkTaskDto?> GetClockworkTaskAsync(Guid accountId, Guid id, bool trackChanges) {
         var clockworkTask = await GetClockworkTaskAndCheckIfItExistsAsync(accountId, id, trackChanges);
         var clockworkTaskDto = _mapper.Map<ClockworkTaskDto>(clockworkTask);
         return clockworkTaskDto;
     }
 
-    public async Task<IEnumerable<ClockworkTaskDto>> GetClockworkTasksCollectionAsync(Guid accountId, IEnumerable<Guid> ids, bool trackChanges)
-    {
+    public async Task<IEnumerable<ClockworkTaskDto>> GetClockworkTasksCollectionAsync(Guid accountId, IEnumerable<Guid> ids, bool trackChanges) {
         if (ids is null)
             throw new IdParametersBadRequestException();
 
@@ -121,8 +108,7 @@ public class ClockworkTasksService : IClockworkTasksService
         return clockworkTasksDto;
     }
 
-    public async Task<ClockworkTaskDto> CreateClockworkTaskAsync(Guid accountId, ClockworkTaskForCreationDto clockworkTask, bool trackChanges)
-    {
+    public async Task<ClockworkTaskDto> CreateClockworkTaskAsync(Guid accountId, ClockworkTaskForCreationDto clockworkTask, bool trackChanges) {
         var account = await GetAccountAndCheckIfItExistsAsync(accountId, trackChanges);
 
         var clockworkTaskEntity = _mapper.Map<ClockworkTask>(clockworkTask);
@@ -133,16 +119,14 @@ public class ClockworkTasksService : IClockworkTasksService
         return clockworkTaskDto;
     }
 
-    public async Task DeleteClockworkTaskAsync(Guid accountId, Guid id, bool trackChanges)
-    {
+    public async Task DeleteClockworkTaskAsync(Guid accountId, Guid id, bool trackChanges) {
         var accountForTask = await GetClockworkTaskAndCheckIfItExistsAsync(accountId, id, trackChanges);
         _repository.ClockworkTasks.DeleteClockworkTask(accountForTask);
         await _repository.SaveAsync();
     }
 
     public async Task UpdateClockworkTaskAsync(Guid accountId, Guid id, ClockworkTaskForUpdateDto clockworkTaskForUpdateDto, bool accTrackChanges, bool
-        tskTrackChanges)
-    {
+        tskTrackChanges) {
         var account = await GetAccountAndCheckIfItExistsAsync(accountId, accTrackChanges);
 
         var clockworkTask = await _repository.ClockworkTasks.GetClockworkTaskAsync(accountId, id, tskTrackChanges);
@@ -153,8 +137,7 @@ public class ClockworkTasksService : IClockworkTasksService
         await _repository.SaveAsync();
     }
 
-    public IEnumerable<ClockworkTaskDto> GetClockworkTasksCollection(Guid accountId, IEnumerable<Guid> ids, bool trackChanges)
-    {
+    public IEnumerable<ClockworkTaskDto> GetClockworkTasksCollection(Guid accountId, IEnumerable<Guid> ids, bool trackChanges) {
         if (ids is null)
             throw new IdParametersBadRequestException();
 

@@ -1,6 +1,7 @@
 ﻿using Contracts;
 using Entities.Models;
 using Microsoft.EntityFrameworkCore;
+using Shared.RequestFeatures;
 
 namespace Repository;
 
@@ -39,10 +40,16 @@ public class ClockworkTasksRepository : RepositoryBase<ClockworkTask>, IClockwor
         var tasksByIds = tasksByAccountId.Where(id => ids.Contains(id.Id)).ToList();
         return tasksByIds;
     }
+    public async Task<IEnumerable<ClockworkTask>> GetAllClockworkTasksAsync(Guid accountId, ClockworkTasksParameters clockworkTasksParameters, bool trackChanges) {
+        var tasksByAccountId = await FindByCondition(task => task.AccountId.Equals(accountId), trackChanges)
+            .OrderBy(task => task.ClockworkTaskKey)
+            .Skip(clockworkTasksParameters.PageSize * (clockworkTasksParameters.PageNumber - 1))
+            .Take(clockworkTasksParameters.PageSize)
+            .ToListAsync();
 
-    public async Task<IEnumerable<ClockworkTask>> GetAllClockworkTasksAsync(Guid accountId, bool trackChanges) =>
-        await FindByCondition(ac => ac.AccountId.Equals(accountId), trackChanges).ToListAsync();
-
+        return tasksByAccountId;
+    }
+    
     public async Task<ClockworkTask?> GetClockworkTaskAsync(Guid accountId, Guid id, bool trackChanges) =>
         await FindByCondition(ac => ac.Id.Equals(id) && ac.AccountId.Equals(accountId), trackChanges)
             .SingleOrDefaultAsync();
