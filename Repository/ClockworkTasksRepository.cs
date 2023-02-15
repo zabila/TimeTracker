@@ -35,14 +35,17 @@ public class ClockworkTasksRepository : RepositoryBase<ClockworkTask>, IClockwor
         var tasksByIds = tasksByAccountId.Where(id => ids.Contains(id.Id)).ToList();
         return tasksByIds;
     }
-    public async Task<IEnumerable<ClockworkTask>> GetAllClockworkTasksAsync(Guid accountId, ClockworkTasksParameters clockworkTasksParameters, bool trackChanges) {
+    public async Task<PagedList<ClockworkTask>> GetAllClockworkTasksAsync(Guid accountId, ClockworkTasksParameters clockworkTasksParameters, bool trackChanges) {
+
         var tasksByAccountId = await FindByCondition(task => task.AccountId.Equals(accountId), trackChanges)
             .OrderBy(task => task.ClockworkTaskKey)
             .Skip(clockworkTasksParameters.PageSize * (clockworkTasksParameters.PageNumber - 1))
             .Take(clockworkTasksParameters.PageSize)
             .ToListAsync();
 
-        return tasksByAccountId;
+        var count = await FindByCondition(task => task.AccountId.Equals(accountId), trackChanges).CountAsync();
+
+        return new PagedList<ClockworkTask>(tasksByAccountId, count, clockworkTasksParameters.PageNumber, clockworkTasksParameters.PageSize);
     }
 
     public async Task<ClockworkTask?> GetClockworkTaskAsync(Guid accountId, Guid id, bool trackChanges) =>

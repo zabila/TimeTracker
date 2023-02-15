@@ -1,4 +1,6 @@
-﻿using Shared.RequestFeatures;
+﻿using System.Text.Json;
+using System.Text.Json.Nodes;
+using Shared.RequestFeatures;
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.DataTransferObjects;
@@ -15,8 +17,9 @@ public class ClockworkTasksController : ControllerBase {
 
     [HttpGet]
     public async Task<IActionResult> GetClockworkTasksForAccount(Guid accountId, [FromQuery] ClockworkTasksParameters clockworkTasksParameters) {
-        var clockworkTasks = await _service.ClockworkTasks.GetAllClockworkTasksAsync(accountId, clockworkTasksParameters, false);
-        return Ok(clockworkTasks);
+        var pagesResult = await _service.ClockworkTasks.GetAllClockworkTasksAsync(accountId, clockworkTasksParameters, false);
+        Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(pagesResult.metaData));
+        return Ok(pagesResult.clockworkTaskDtos);
     }
 
     [HttpGet("{id:Guid}", Name = "GetClockworkForAccount")]
