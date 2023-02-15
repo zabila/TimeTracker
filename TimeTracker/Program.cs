@@ -23,8 +23,7 @@ builder.Services.ConfigureRepositoryManager();
 builder.Services.ConfigureSqlContext(builder.Configuration);
 builder.Services.ConfigureServiceManager();
 
-builder.Services.AddControllers(config =>
-{
+builder.Services.AddControllers(config => {
     config.RespectBrowserAcceptHeader = true;
     config.ReturnHttpNotAcceptable = true;
 }).AddXmlDataContractSerializerFormatters();
@@ -49,8 +48,7 @@ if (app.Environment.IsProduction())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-app.UseForwardedHeaders(new ForwardedHeadersOptions
-{
+app.UseForwardedHeaders(new ForwardedHeadersOptions {
     ForwardedHeaders = ForwardedHeaders.All
 });
 

@@ -6,22 +6,16 @@ using Microsoft.AspNetCore.Diagnostics;
 
 namespace TimeTracker.Extensions;
 
-public static class ExceptionMiddlewareExtensions
-{
-    public static void ConfigureExceptionHandler(this WebApplication app, ILoggerManager logger)
-    {
-        app.UseExceptionHandler(appError =>
-        {
-            appError.Run(async context =>
-            {
+public static class ExceptionMiddlewareExtensions {
+    public static void ConfigureExceptionHandler(this WebApplication app, ILoggerManager logger) {
+        app.UseExceptionHandler(appError => {
+            appError.Run(async context => {
                 context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                 context.Response.ContentType = "application/json";
 
                 var contextFeature = context.Features.Get<IExceptionHandlerFeature>();
-                if (contextFeature != null)
-                {
-                    context.Response.StatusCode = contextFeature.Error switch
-                    {
+                if (contextFeature != null) {
+                    context.Response.StatusCode = contextFeature.Error switch {
                         NotFoundException _ => StatusCodes.Status404NotFound,
                         BadRequestException => StatusCodes.Status400BadRequest,
                         _ => StatusCodes.Status500InternalServerError
@@ -29,8 +23,7 @@ public static class ExceptionMiddlewareExtensions
 
                     logger.LogError("Something went wrong: " + contextFeature.Error);
 
-                    await context.Response.WriteAsync(new ErrorDetails
-                    {
+                    await context.Response.WriteAsync(new ErrorDetails {
                         StatusCode = context.Response.StatusCode,
                         Message = contextFeature.Error.Message
                     }.ToString());

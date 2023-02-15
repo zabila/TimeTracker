@@ -4,13 +4,10 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Repository.Configuration;
 
-public class ClockworkTaskConfiguration : IEntityTypeConfiguration<ClockworkTask>
-{
-    public void Configure(EntityTypeBuilder<ClockworkTask> builder)
-    {
+public class ClockworkTaskConfiguration : IEntityTypeConfiguration<ClockworkTask> {
+    public void Configure(EntityTypeBuilder<ClockworkTask> builder) {
         builder.HasData(
-            new ClockworkTask
-            {
+            new ClockworkTask {
                 Id = new Guid("80abbca8-664d-4b20-b5de-024705497d4a"),
                 ClockworkTaskId = 0,
                 ClockworkTaskKey = "unknown",

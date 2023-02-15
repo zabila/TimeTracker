@@ -4,10 +4,8 @@ using Repository;
 
 namespace TimeTracker.ContextFactory;
 
-public class RepositoryContextFactory : IDesignTimeDbContextFactory<RepositoryContext>
-{
-    public RepositoryContext CreateDbContext(string[] args)
-    {
+public class RepositoryContextFactory : IDesignTimeDbContextFactory<RepositoryContext> {
+    public RepositoryContext CreateDbContext(string[] args) {
         var connection = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
             .AddJsonFile("appsettings.json")

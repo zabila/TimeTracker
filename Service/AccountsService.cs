@@ -7,21 +7,18 @@ using Service.Contracts;
 
 namespace Service;
 
-internal sealed class AccountsService : IAccountsService
-{
+internal sealed class AccountsService : IAccountsService {
     private readonly IRepositoryManager _repository;
     private readonly ILoggerManager _logger;
     private readonly IMapper _mapper;
 
-    public AccountsService(ILoggerManager logger, IRepositoryManager repository, IMapper mapper)
-    {
+    public AccountsService(ILoggerManager logger, IRepositoryManager repository, IMapper mapper) {
         _logger = logger;
         _repository = repository;
         _mapper = mapper;
     }
 
-    public IEnumerable<AccountDto> GetAllAccounts(bool trackChanges)
-    {
+    public IEnumerable<AccountDto> GetAllAccounts(bool trackChanges) {
         _logger.LogInfo("Getting all accounts");
 
         var accounts = _repository.Accounts.GetAllAccounts(trackChanges);
@@ -29,16 +26,14 @@ internal sealed class AccountsService : IAccountsService
         return accountsDto;
     }
 
-    private async Task<Account> GetAccountAndCheckIfItExistsAsync(Guid accountId, bool trackChanges)
-    {
+    private async Task<Account> GetAccountAndCheckIfItExistsAsync(Guid accountId, bool trackChanges) {
         var account = await _repository.Accounts.GetAccountAsync(accountId, trackChanges);
         if (account is null)
             throw new AccountNotFoundException(accountId);
         return account;
     }
 
-    public AccountDto? GetAccount(Guid accountId, bool trackChanges)
-    {
+    public AccountDto? GetAccount(Guid accountId, bool trackChanges) {
         var account = _repository.Accounts.GetAccount(accountId, trackChanges);
         if (account is null)
             throw new AccountNotFoundException(accountId);
@@ -47,8 +42,7 @@ internal sealed class AccountsService : IAccountsService
         return accountDto;
     }
 
-    public AccountDto CreateAccount(AccountForCreationDto account)
-    {
+    public AccountDto CreateAccount(AccountForCreationDto account) {
         var accountEntity = _mapper.Map<Account>(account);
 
         _repository.Accounts.CreateAccount(accountEntity);
@@ -58,8 +52,7 @@ internal sealed class AccountsService : IAccountsService
         return accountToReturn;
     }
 
-    public void DeleteAccount(Guid accountId)
-    {
+    public void DeleteAccount(Guid accountId) {
         var account = _repository.Accounts.GetAccount(accountId, false);
         if (account is null)
             throw new AccountNotFoundException(accountId);
@@ -68,8 +61,7 @@ internal sealed class AccountsService : IAccountsService
         _repository.Save();
     }
 
-    public void UpdateAccount(Guid accountId, AccountForUpdateDto accountForUpdateDto, bool trackChanges)
-    {
+    public void UpdateAccount(Guid accountId, AccountForUpdateDto accountForUpdateDto, bool trackChanges) {
         var account = _repository.Accounts.GetAccount(accountId, trackChanges);
         if (account is null)
             throw new AccountNotFoundException(accountId);
@@ -78,22 +70,19 @@ internal sealed class AccountsService : IAccountsService
         _repository.Save();
     }
 
-    public async Task<IEnumerable<AccountDto>> GetAllAccountsAsync(bool trackChanges)
-    {
+    public async Task<IEnumerable<AccountDto>> GetAllAccountsAsync(bool trackChanges) {
         var accounts = await _repository.Accounts.GetAllAccountsAsync(trackChanges);
         var accountsDto = _mapper.Map<IEnumerable<AccountDto>>(accounts);
         return accountsDto;
     }
 
-    public async Task<AccountDto?> GetAccountAsync(Guid accountId, bool trackChanges)
-    {
+    public async Task<AccountDto?> GetAccountAsync(Guid accountId, bool trackChanges) {
         var account = await GetAccountAndCheckIfItExistsAsync(accountId, trackChanges);
         var accountDto = _mapper.Map<AccountDto>(account);
         return accountDto;
     }
 
-    public async Task<AccountDto> CreateAccountAsync(AccountForCreationDto account)
-    {
+    public async Task<AccountDto> CreateAccountAsync(AccountForCreationDto account) {
         var accountEntity = _mapper.Map<Account>(account);
 
         _repository.Accounts.CreateAccount(accountEntity);
@@ -103,15 +92,13 @@ internal sealed class AccountsService : IAccountsService
         return accountToReturn;
     }
 
-    public async Task DeleteAccountAsync(Guid accountId)
-    {
+    public async Task DeleteAccountAsync(Guid accountId) {
         var account = await GetAccountAndCheckIfItExistsAsync(accountId, false);
         _repository.Accounts.DeleteAccount(account);
         await _repository.SaveAsync();
     }
 
-    public async Task UpdateAccountAsync(Guid accountId, AccountForUpdateDto accountForUpdateDto, bool trackChanges)
-    {
+    public async Task UpdateAccountAsync(Guid accountId, AccountForUpdateDto accountForUpdateDto, bool trackChanges) {
         var account = await GetAccountAndCheckIfItExistsAsync(accountId, trackChanges);
         _mapper.Map(accountForUpdateDto, account);
         await _repository.SaveAsync();

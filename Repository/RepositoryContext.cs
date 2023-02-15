@@ -4,15 +4,12 @@ using Repository.Configuration;
 
 namespace Repository;
 
-public class RepositoryContext : DbContext
-{
+public class RepositoryContext : DbContext {
     public RepositoryContext(DbContextOptions options)
-        : base(options)
-    {
+        : base(options) {
     }
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
+    protected override void OnModelCreating(ModelBuilder modelBuilder) {
         modelBuilder.ApplyConfiguration(new AccountsConfiguration());
         modelBuilder.ApplyConfiguration(new ClockworkTaskConfiguration());
     }

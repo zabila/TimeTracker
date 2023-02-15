@@ -2,8 +2,7 @@
 
 namespace Shared.DataTransferObjects;
 
-public record AccountForUpdateDto
-{
+public record AccountForUpdateDto {
     [MaxLength(30, ErrorMessage = "Account name cannot be longer than 30 characters")]
     public string? UserName { get; init; }
 

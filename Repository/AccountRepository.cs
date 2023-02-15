@@ -4,11 +4,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Repository;
 
-public sealed class AccountRepository : RepositoryBase<Account>, IAccountsRepository
-{
+public sealed class AccountRepository : RepositoryBase<Account>, IAccountsRepository {
     public AccountRepository(RepositoryContext repositoryContext)
-        : base(repositoryContext)
-    {
+        : base(repositoryContext) {
     }
 
     public IEnumerable<Account> GetAllAccounts(bool trackChanges) => FindAll(trackChanges).ToList();

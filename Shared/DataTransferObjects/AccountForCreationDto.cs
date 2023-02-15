@@ -1,7 +1,6 @@
 ﻿namespace Shared.DataTransferObjects;
 
-public record AccountForCreationDto
-{
+public record AccountForCreationDto {
     public string? UserName { get; init; }
     public string? ClockworkAccountId { get; init; }
     public string? FirstName { get; init; }

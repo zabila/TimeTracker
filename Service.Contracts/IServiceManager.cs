@@ -1,7 +1,6 @@
 ﻿namespace Service.Contracts;
 
-public interface IServiceManager
-{
+public interface IServiceManager {
     IAccountsService Accounts { get; }
     IClockworkTasksService ClockworkTasks { get; }
 }

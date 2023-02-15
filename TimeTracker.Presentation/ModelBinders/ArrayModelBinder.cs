@@ -4,16 +4,13 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace TimeTracker.Presentation.ModelBinders;
 
-public class ArrayModelBinder : IModelBinder
-{
-    public Task BindModelAsync(ModelBindingContext bindingContext)
-    {
+public class ArrayModelBinder : IModelBinder {
+    public Task BindModelAsync(ModelBindingContext bindingContext) {
         if (bindingContext is null)
             throw new ArgumentNullException(nameof(bindingContext));
 
         var modelMetadata = bindingContext.ModelMetadata;
-        if (!modelMetadata.IsEnumerableType)
-        {
+        if (!modelMetadata.IsEnumerableType) {
             bindingContext.Result = ModelBindingResult.Failed();
             return Task.CompletedTask;
         }
@@ -22,8 +19,7 @@ public class ArrayModelBinder : IModelBinder
             .GetValue(bindingContext.ModelName)
             .ToString();
 
-        if (string.IsNullOrEmpty(provideValue))
-        {
+        if (string.IsNullOrEmpty(provideValue)) {
             bindingContext.Result = ModelBindingResult.Success(null);
             return Task.CompletedTask;
         }
@@ -31,8 +27,7 @@ public class ArrayModelBinder : IModelBinder
         var modelType = bindingContext.ModelType;
         var typeInfo = modelType.GetTypeInfo();
         var genericTypeArguments = typeInfo.GetGenericArguments();
-        if (genericTypeArguments.Length < 1)
-        {
+        if (genericTypeArguments.Length < 1) {
             bindingContext.Result = ModelBindingResult.Failed();
             return Task.CompletedTask;
         }
@@ -40,7 +35,9 @@ public class ArrayModelBinder : IModelBinder
         var genericType = genericTypeArguments[0];
         var converter = TypeDescriptor.GetConverter(genericType);
 
-        var objectArray = provideValue.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries)
+        var objectArray = provideValue.Split(new[] {
+                ","
+            }, StringSplitOptions.RemoveEmptyEntries)
             .Select(x => converter.ConvertFromString(x.Trim())).ToArray();
 
         var guidArray = Array.CreateInstance(genericType, objectArray.Length);

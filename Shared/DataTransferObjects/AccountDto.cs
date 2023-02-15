@@ -1,7 +1,6 @@
 ﻿namespace Shared.DataTransferObjects;
 
-public record AccountDto
-{
+public record AccountDto {
     public Guid Id { get; init; }
     public string? UserName { get; init; }
     public string? FirstName { get; init; }

@@ -3,23 +3,19 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace TimeTracker.Presentation.ActionFilters;
 
-public class ValidationFilterAttribute : IActionFilter
-{
-    public ValidationFilterAttribute()
-    {
+public class ValidationFilterAttribute : IActionFilter {
+    public ValidationFilterAttribute() {
     }
 
 
-    public void OnActionExecuting(ActionExecutingContext context)
-    {
+    public void OnActionExecuting(ActionExecutingContext context) {
         var action = context.RouteData.Values["action"];
         var controller = context.RouteData.Values["controller"];
 
         var param = context.ActionArguments
             .SingleOrDefault(x => x.Value.ToString()!.Contains("Dto")).Value;
 
-        if (param is null)
-        {
+        if (param is null) {
             context.Result = new BadRequestObjectResult("Object is null. Controller: " + controller + ", action: " + action);
             return;
         }
@@ -28,7 +24,6 @@ public class ValidationFilterAttribute : IActionFilter
             context.Result = new UnprocessableEntityObjectResult(context.ModelState);
     }
 
-    public void OnActionExecuted(ActionExecutedContext context)
-    {
+    public void OnActionExecuted(ActionExecutedContext context) {
     }
 }

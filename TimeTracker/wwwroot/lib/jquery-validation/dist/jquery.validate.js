@@ -1548,7 +1548,10 @@
                             validator.showErrors();
                         } else {
                             errors = {};
-                            message = response || validator.defaultMessage(element, {method: method, parameters: value});
+                            message = response || validator.defaultMessage(element, {
+                                method: method,
+                                parameters: value
+                            });
                             errors[element.name] = previous.message = message;
                             validator.invalid[element.name] = true;
                             validator.showErrors(errors);

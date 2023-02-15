@@ -3,8 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Entities.Models;
 
-public class ClockworkTask
-{
+public class ClockworkTask {
     [Key] [Column("TaskId")] public Guid Id { get; set; }
 
     [Required(ErrorMessage = "ClockworkTaskId is required")]

@@ -2,8 +2,7 @@
 
 namespace Service.Contracts;
 
-public interface IAccountsService
-{
+public interface IAccountsService {
     IEnumerable<AccountDto> GetAllAccounts(bool trackChanges);
     AccountDto? GetAccount(Guid accountId, bool trackChanges);
     AccountDto CreateAccount(AccountForCreationDto account);

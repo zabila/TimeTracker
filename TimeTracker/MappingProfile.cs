@@ -4,10 +4,8 @@ using Shared.DataTransferObjects;
 
 namespace TimeTracker;
 
-public class MappingProfile : Profile
-{
-    public MappingProfile()
-    {
+public class MappingProfile : Profile {
+    public MappingProfile() {
         CreateMap<Account, AccountDto>();
         CreateMap<ClockworkTask, ClockworkTaskDto>();
         CreateMap<AccountForCreationDto, Account>();

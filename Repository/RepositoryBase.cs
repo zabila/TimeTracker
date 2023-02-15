@@ -4,8 +4,7 @@ using System.Linq.Expressions;
 
 namespace Repository;
 
-public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : class
-{
+public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : class {
     private readonly RepositoryContext _repositoryContext;
 
     protected RepositoryBase(RepositoryContext repositoryContext) => _repositoryContext = repositoryContext;

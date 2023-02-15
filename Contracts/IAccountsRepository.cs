@@ -2,8 +2,7 @@ using Entities.Models;
 
 namespace Contracts;
 
-public interface IAccountsRepository
-{
+public interface IAccountsRepository {
     IEnumerable<Account> GetAllAccounts(bool trackChanges);
     Account? GetAccount(Guid accountId, bool trackChanges);
     Task<IEnumerable<Account>> GetAllAccountsAsync(bool trackChanges);

@@ -1,7 +1,6 @@
 ﻿namespace Shared.DataTransferObjects;
 
-public record ClockworkTaskDto
-{
+public record ClockworkTaskDto {
     public Guid Id { get; init; }
     public int ClockworkTaskId { get; init; }
     public string? ClockworkTaskKey { get; init; }

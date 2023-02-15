@@ -1,6 +1,5 @@
-namespace Shared.RequestFeatures; 
+namespace Shared.RequestFeatures;
 
-public class ClockworkTasksParameters : RequestParameters 
-{
-    
+public class ClockworkTasksParameters : RequestParameters {
+
 }
