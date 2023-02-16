@@ -99,6 +99,9 @@ public class ClockworkTasksService : IClockworkTasksService {
     public async Task<(IEnumerable<ClockworkTaskDto> clockworkTaskDtos, MetaData metaData )> GetAllClockworkTasksAsync(Guid accountId, ClockworkTasksParameters clockworkTasksParameters, bool trackChanges) {
         await CheckIfAccountExitsAsync(accountId, trackChanges);
         
+        if(!clockworkTasksParameters.ValidStartedDateTimeRange)
+            throw new StartedDataTimeRangeBadRequestException(clockworkTasksParameters.FromStartedDateTime, clockworkTasksParameters.ToStartedDateTime);
+                
         var clockworkTasksWithMetaData = await _repository.ClockworkTasks.GetAllClockworkTasksAsync(accountId, clockworkTasksParameters, trackChanges);
         var clockworkTasksDto = _mapper.Map<IEnumerable<ClockworkTaskDto>>(clockworkTasksWithMetaData);
         return (clockworkTaskDtos: clockworkTasksDto, metaData: clockworkTasksWithMetaData.MetaData);
