@@ -39,9 +39,9 @@ public class ClockworkTasksRepository : RepositoryBase<ClockworkTask>, IClockwor
     public async Task<PagedList<ClockworkTask>> GetAllClockworkTasksAsync(Guid accountId, ClockworkTasksParameters clockworkTasksParameters, bool trackChanges) {
 
         var tasksByAccountId = await FindByCondition(task => task.AccountId.Equals(accountId), trackChanges)
-            .FilterClockworkTasks(clockworkTasksParameters.FromStartedDateTime, clockworkTasksParameters.ToStartedDateTime)
-            .SearchClockworkTasks(clockworkTasksParameters.SearchTerm)
-            .OrderBy(task => task.ClockworkTaskKey)
+            .Filter(clockworkTasksParameters.FromStartedDateTime, clockworkTasksParameters.ToStartedDateTime)
+            .Search(clockworkTasksParameters.SearchTerm)
+            .Sort(clockworkTasksParameters.OrderBy)
             .Skip(clockworkTasksParameters.PageSize * (clockworkTasksParameters.PageNumber - 1))
             .Take(clockworkTasksParameters.PageSize)
             .ToListAsync();
