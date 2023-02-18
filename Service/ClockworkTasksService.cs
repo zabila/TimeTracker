@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Dynamic;
+using AutoMapper;
 using Contracts;
 using Entities.Exceptions;
 using Entities.Models;
@@ -12,11 +13,13 @@ public class ClockworkTasksService : IClockworkTasksService {
     private readonly IRepositoryManager _repository;
     private readonly ILoggerManager _logger;
     private readonly IMapper _mapper;
+    private readonly IDataShaper<ClockworkTaskDto> _dataShaper;
 
-    public ClockworkTasksService(ILoggerManager logger, IRepositoryManager repository, IMapper mapper) {
+    public ClockworkTasksService(ILoggerManager logger, IRepositoryManager repository, IMapper mapper, IDataShaper<ClockworkTaskDto> dataShaper) {
         _logger = logger;
         _repository = repository;
         _mapper = mapper;
+        _dataShaper = dataShaper;
     }
 
     private async Task CheckIfAccountExitsAsync(Guid accountId, bool trackChanges) {
@@ -96,15 +99,17 @@ public class ClockworkTasksService : IClockworkTasksService {
         _repository.Save();
     }
 
-    public async Task<(IEnumerable<ClockworkTaskDto> clockworkTaskDtos, MetaData metaData )> GetAllClockworkTasksAsync(Guid accountId, ClockworkTasksParameters clockworkTasksParameters, bool trackChanges) {
+    public async Task<(IEnumerable<ExpandoObject> clockworkTaskDtos, MetaData metaData )>
+        GetAllClockworkTasksAsync(Guid accountId, ClockworkTasksParameters clockworkTasksParameters, bool trackChanges) {
         await CheckIfAccountExitsAsync(accountId, trackChanges);
-        
-        if(!clockworkTasksParameters.ValidStartedDateTimeRange)
+
+        if (!clockworkTasksParameters.ValidStartedDateTimeRange)
             throw new StartedDataTimeRangeBadRequestException(clockworkTasksParameters.FromStartedDateTime, clockworkTasksParameters.ToStartedDateTime);
-                
+
         var clockworkTasksWithMetaData = await _repository.ClockworkTasks.GetAllClockworkTasksAsync(accountId, clockworkTasksParameters, trackChanges);
         var clockworkTasksDto = _mapper.Map<IEnumerable<ClockworkTaskDto>>(clockworkTasksWithMetaData);
-        return (clockworkTaskDtos: clockworkTasksDto, metaData: clockworkTasksWithMetaData.MetaData);
+        var shapedClockworkTasksDto = _dataShaper.ShapeData(clockworkTasksDto, clockworkTasksParameters.Fields!);
+        return (clockworkTaskDtos: shapedClockworkTasksDto, metaData: clockworkTasksWithMetaData.MetaData);
     }
 
     public async Task<ClockworkTaskDto?> GetClockworkTaskAsync(Guid accountId, Guid id, bool trackChanges) {

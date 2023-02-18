@@ -9,6 +9,7 @@ public class ClockworkTasksParameters : RequestParameters {
     public DateTime ToStartedDateTime { get; set; } = DateTime.MaxValue;
     public TimeSpan Duration { get; set; }
     public string? SearchTerm { get; set; }
+    public string? Fields { get; set; }
 
 
     public bool ValidStartedDateTimeRange {

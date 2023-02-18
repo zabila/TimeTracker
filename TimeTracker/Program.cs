@@ -2,9 +2,10 @@ using Contracts;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
-using Microsoft.Extensions.Options;
+using Shared.DataTransferObjects;
 using TimeTracker.Extensions;
 using NLog;
+using Service.DataShaping;
 using TimeTracker.Presentation.ActionFilters;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -29,9 +30,16 @@ builder.Services.AddControllers(config => {
 }).AddXmlDataContractSerializerFormatters();
 
 builder.Services.AddScoped<ValidationFilterAttribute>();
+builder.Services.AddScoped<IDataShaper<ClockworkTaskDto>, DataShaper<ClockworkTaskDto>>();
+
 
 builder.Services.AddControllers()
     .AddApplicationPart(typeof(TimeTracker.Presentation.AssemblyReference).Assembly);
+
+builder.Services.AddControllers(options =>
+{
+    options.OutputFormatters.Add(new XmlDataContractSerializerOutputFormatter());
+});
 
 builder.Services.AddAutoMapper(typeof(Program));
 
