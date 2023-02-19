@@ -99,7 +99,7 @@ public class ClockworkTasksService : IClockworkTasksService {
         _repository.Save();
     }
 
-    public async Task<(IEnumerable<ExpandoObject> clockworkTaskDtos, MetaData metaData )>
+    public async Task<(IEnumerable<ShapeEntity> clockworkTaskDtos, MetaData metaData )>
         GetAllClockworkTasksAsync(Guid accountId, ClockworkTasksParameters clockworkTasksParameters, bool trackChanges) {
         await CheckIfAccountExitsAsync(accountId, trackChanges);
 
