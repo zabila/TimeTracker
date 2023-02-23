@@ -16,6 +16,7 @@ public class ClockworkTasksController : ControllerBase {
     public ClockworkTasksController(IServiceManager serviceManager) => _service = serviceManager;
 
     [HttpGet]
+    [HttpHead]
     public async Task<IActionResult> GetClockworkTasksForAccount(Guid accountId, [FromQuery] ClockworkTasksParameters clockworkTasksParameters) {
         var pagesResult = await _service.ClockworkTasks.GetAllClockworkTasksAsync(accountId, clockworkTasksParameters, false);
         Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(pagesResult.metaData));

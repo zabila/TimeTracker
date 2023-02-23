@@ -52,4 +52,10 @@ public class AccountsController : ControllerBase {
         await _service.Accounts.UpdateAccountAsync(accountId, accountForUpdateDto, true);
         return NoContent();
     }
+    
+    [HttpOptions]
+    public IActionResult GetAccountOptions() {
+        Response.Headers.Add("Allow", "GET,OPTIONS,POST");
+        return Ok();
+    }
 }
