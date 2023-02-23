@@ -13,7 +13,7 @@ public class AccountsController : ControllerBase {
 
     public AccountsController(IServiceManager serviceManager) => _service = serviceManager;
 
-    [HttpGet]
+    [HttpGet(Name = "GetAccounts")]
     public async Task<IActionResult> GetAccounts() {
         var accounts = await _service.Accounts.GetAllAccountsAsync(false);
         return Ok(accounts);
@@ -28,7 +28,7 @@ public class AccountsController : ControllerBase {
         return Ok(account);
     }
 
-    [HttpPost]
+    [HttpPost(Name = "CreateAccount")]
     [ServiceFilter(typeof(ValidationFilterAttribute))]
     public async Task<IActionResult> CreateAccount([FromBody] AccountForCreationDto? account) {
         if (account == null)

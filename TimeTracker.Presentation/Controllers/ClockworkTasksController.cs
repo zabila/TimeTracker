@@ -1,9 +1,10 @@
 ﻿using System.Text.Json;
-using System.Text.Json.Nodes;
+using Entities.LinkModels;
 using Shared.RequestFeatures;
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.DataTransferObjects;
+using TimeTracker.Presentation.ActionFilters;
 using TimeTracker.Presentation.ModelBinders;
 
 namespace TimeTracker.Presentation.Controllers;
@@ -16,11 +17,12 @@ public class ClockworkTasksController : ControllerBase {
     public ClockworkTasksController(IServiceManager serviceManager) => _service = serviceManager;
 
     [HttpGet]
-    [HttpHead]
+    [ServiceFilter(typeof(ValidateMediaTypeAttribute))]
     public async Task<IActionResult> GetClockworkTasksForAccount(Guid accountId, [FromQuery] ClockworkTasksParameters clockworkTasksParameters) {
-        var pagesResult = await _service.ClockworkTasks.GetAllClockworkTasksAsync(accountId, clockworkTasksParameters, false);
-        Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(pagesResult.metaData));
-        return Ok(pagesResult.clockworkTaskDtos);
+        var linkParameters = new LinkParameters(clockworkTasksParameters, HttpContext);
+        var result = await _service.ClockworkTasks.GetAllClockworkTasksAsync(accountId, linkParameters, false);
+        Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.metaData));
+        return result.linkResponse.HasLinks ? Ok(result.linkResponse.LinkedEntities) : Ok(result.linkResponse.ShapeEntities);
     }
 
     [HttpGet("{id:Guid}", Name = "GetClockworkForAccount")]

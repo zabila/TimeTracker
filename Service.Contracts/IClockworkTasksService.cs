@@ -1,4 +1,5 @@
 ﻿using System.Dynamic;
+using Entities.LinkModels;
 using Entities.Models;
 using Shared.DataTransferObjects;
 using Shared.RequestFeatures;
@@ -14,7 +15,7 @@ public interface IClockworkTasksService {
     void UpdateClockworkTask(Guid accountId, Guid id, ClockworkTaskForUpdateDto clockworkTaskForUpdateDto, bool accTrackChanges, bool tskTrackChanges);
 
 
-    Task<(IEnumerable<ShapeEntity> clockworkTaskDtos, MetaData metaData)> GetAllClockworkTasksAsync(Guid accountId, ClockworkTasksParameters clockworkTasksParameters, bool trackChanges);
+    Task<(LinkResponse linkResponse, MetaData metaData)> GetAllClockworkTasksAsync(Guid accountId, LinkParameters clockworkTasksParameters, bool trackChanges);
     Task<ClockworkTaskDto?> GetClockworkTaskAsync(Guid accountId, Guid id, bool trackChanges);
     Task<IEnumerable<ClockworkTaskDto>> GetClockworkTasksCollectionAsync(Guid accountId, IEnumerable<Guid> ids, bool trackChanges);
     Task<ClockworkTaskDto> CreateClockworkTaskAsync(Guid accountId, ClockworkTaskForCreationDto clockworkTask, bool trackChanges);

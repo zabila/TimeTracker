@@ -7,6 +7,7 @@ using TimeTracker.Extensions;
 using NLog;
 using Service.DataShaping;
 using TimeTracker.Presentation.ActionFilters;
+using TimeTracker.Utility;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,8 +30,12 @@ builder.Services.AddControllers(config => {
     config.ReturnHttpNotAcceptable = true;
 }).AddXmlDataContractSerializerFormatters();
 
+//Validation Attribute
 builder.Services.AddScoped<ValidationFilterAttribute>();
+builder.Services.AddScoped<ValidateMediaTypeAttribute>();
+
 builder.Services.AddScoped<IDataShaper<ClockworkTaskDto>, DataShaper<ClockworkTaskDto>>();
+builder.Services.AddScoped<IClockworkLinks, ClockworkLinks>();
 
 
 builder.Services.AddControllers()
@@ -45,6 +50,8 @@ builder.Services.AddAutoMapper(typeof(Program));
 
 builder.Services.AddControllers()
     .AddNewtonsoftJson();
+
+builder.Services.AddCustomMediaTypes();
 
 var app = builder.Build();
 
