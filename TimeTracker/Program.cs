@@ -25,6 +25,7 @@ builder.Services.ConfigureRepositoryManager();
 builder.Services.ConfigureSqlContext(builder.Configuration);
 builder.Services.ConfigureServiceManager();
 builder.Services.ConfigureVersioning();
+builder.Services.ConfigureResponseCaching();
 
 builder.Services.AddControllers(config => {
     config.RespectBrowserAcceptHeader = true;
@@ -69,6 +70,7 @@ app.UseForwardedHeaders(new ForwardedHeadersOptions {
 });
 
 app.UseCors("CorsPolicy");
+app.UseResponseCaching();
 app.UseRouting();
 
 app.UseAuthorization();

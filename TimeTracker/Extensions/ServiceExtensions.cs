@@ -67,4 +67,8 @@ public static class ServiceExtensions {
             options.ReportApiVersions = true;
         });
     }
+    
+    public static void ConfigureResponseCaching(this IServiceCollection services) {
+        services.AddResponseCaching();
+    }
 }

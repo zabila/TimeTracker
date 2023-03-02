@@ -18,6 +18,7 @@ public class ClockworkTasksController : ControllerBase {
 
     [HttpGet]
     [ServiceFilter(typeof(ValidateMediaTypeAttribute))]
+    [ResponseCache(Duration = 60)]
     public async Task<IActionResult> GetClockworkTasksForAccount(Guid accountId, [FromQuery] ClockworkTasksParameters clockworkTasksParameters) {
         var linkParameters = new LinkParameters(clockworkTasksParameters, HttpContext);
         var result = await _service.ClockworkTasks.GetAllClockworkTasksAsync(accountId, linkParameters, false);
