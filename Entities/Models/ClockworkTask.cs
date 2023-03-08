@@ -20,12 +20,11 @@ public class ClockworkTask {
     [Required(ErrorMessage = "AccountId is required")]
     [ForeignKey(nameof(Account))]
     public Guid AccountId { get; set; }
-    
-    private void WriteLinksToXml( string key, object value, XmlWriter writer ) {
+
+    private void WriteLinksToXml(string key, object value, XmlWriter writer) {
         writer.WriteStartElement(key);
         if (value.GetType() == typeof(List<Link>)) {
-            foreach (var val in (value as List<Link>)!)
-            {
+            foreach (var val in (value as List<Link>)!) {
                 writer.WriteStartElement(nameof(Link));
                 WriteLinksToXml(nameof(val.Href), val.Href!, writer);
                 WriteLinksToXml(nameof(val.Rel), val.Rel!, writer);

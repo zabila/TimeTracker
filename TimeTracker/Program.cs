@@ -26,6 +26,7 @@ builder.Services.ConfigureSqlContext(builder.Configuration);
 builder.Services.ConfigureServiceManager();
 builder.Services.ConfigureVersioning();
 builder.Services.ConfigureResponseCaching();
+builder.Services.ConfigureHttpCacheHeaders();
 
 builder.Services.AddControllers(config => {
     config.RespectBrowserAcceptHeader = true;
@@ -43,8 +44,7 @@ builder.Services.AddScoped<IClockworkLinks, ClockworkLinks>();
 builder.Services.AddControllers()
     .AddApplicationPart(typeof(TimeTracker.Presentation.AssemblyReference).Assembly);
 
-builder.Services.AddControllers(options =>
-{
+builder.Services.AddControllers(options => {
     options.OutputFormatters.Add(new XmlDataContractSerializerOutputFormatter());
 });
 
@@ -71,6 +71,7 @@ app.UseForwardedHeaders(new ForwardedHeadersOptions {
 
 app.UseCors("CorsPolicy");
 app.UseResponseCaching();
+app.UseHttpCacheHeaders();
 app.UseRouting();
 
 app.UseAuthorization();

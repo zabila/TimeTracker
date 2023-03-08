@@ -1,6 +1,6 @@
 ﻿using Entities.Models;
 
-namespace Entities.LinkModels; 
+namespace Entities.LinkModels;
 
 public class LinkResponse {
     public bool HasLinks { get; set; }

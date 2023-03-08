@@ -26,9 +26,11 @@ public class ClockworkLinks : IClockworkLinks {
         return ReturnShapedClockworkTasks(shapedClockworkTasks);
 
     }
-    
+
     private LinkResponse ReturnShapedClockworkTasks(List<Entity> shapedClockworkTasks) {
-        return new LinkResponse{ ShapeEntities = shapedClockworkTasks };
+        return new LinkResponse {
+            ShapeEntities = shapedClockworkTasks
+        };
     }
 
     private List<Entity> ShapeData(IEnumerable<ClockworkTaskDto> clockworkTaskDtos, string fieldsString) {
@@ -51,9 +53,12 @@ public class ClockworkLinks : IClockworkLinks {
         }
 
         var clockworkTasksResource = new LinkCollectionWrapper<Entity>(shapedClockworkTasks);
-        var linkedClockworkTasks = CreateLinksForClockworkTasks(httpContext,clockworkTasksResource);
+        var linkedClockworkTasks = CreateLinksForClockworkTasks(httpContext, clockworkTasksResource);
 
-        return new LinkResponse{ HasLinks = true, LinkedEntities = linkedClockworkTasks };
+        return new LinkResponse {
+            HasLinks = true,
+            LinkedEntities = linkedClockworkTasks
+        };
     }
 
     private List<Link> CreateLinksForClockworkTask(HttpContext httpContext, Guid accountId, Guid id, string fields = "") {

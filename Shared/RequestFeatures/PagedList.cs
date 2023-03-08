@@ -18,7 +18,7 @@ public class PagedList<T> : List<T> {
         var enumerable = source.ToList();
         var count = enumerable.Count;
         var items = enumerable.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
-        
+
         return new PagedList<T>(items, count, pageNumber, pageSize);
     }
 }

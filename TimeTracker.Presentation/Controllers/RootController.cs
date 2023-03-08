@@ -2,19 +2,18 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 
-namespace TimeTracker.Presentation.Controllers; 
+namespace TimeTracker.Presentation.Controllers;
 
 [Route("api")]
 [ApiController]
-public class RootController : ControllerBase
-{
+public class RootController : ControllerBase {
     private readonly LinkGenerator _linkGenerator;
-    
+
     public RootController(LinkGenerator linkGenerator) => _linkGenerator = linkGenerator;
-    
-        
+
+
     [HttpGet(Name = "GetRoot")]
-    public IActionResult GetRoot( [FromHeader(Name = "Accept")] string mediaType) {
+    public IActionResult GetRoot([FromHeader(Name = "Accept")] string mediaType) {
         if (mediaType.Contains("application/vnd.marvel.apiroot+json")) {
             var list = new List<Link> {
                 new Link {

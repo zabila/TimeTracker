@@ -1,5 +1,6 @@
 ﻿using Contracts;
 using LoggerService;
+using Marvin.Cache.Headers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Repository;
@@ -37,7 +38,7 @@ public static class ServiceExtensions {
 
     public static void ConfigureServiceManager(this IServiceCollection services) =>
         services.AddScoped<IServiceManager, ServiceManager>();
-    
+
     public static void AddCustomMediaTypes(this IServiceCollection services) {
         services.Configure<MvcOptions>(config => {
             var newtonsoftJsonOutputFormatter = config.OutputFormatters
@@ -49,7 +50,7 @@ public static class ServiceExtensions {
                 .Add("application/vnd.marvel.hateoas+json");
             newtonsoftJsonOutputFormatter.SupportedMediaTypes
                 .Add("application/vnd.marvel.apiroot+json");
-            
+
             var newtonsoftXmlOutputFormatter = config.OutputFormatters
                 .OfType<XmlDataContractSerializerOutputFormatter>()?.FirstOrDefault();
             if (newtonsoftXmlOutputFormatter == null)
@@ -59,7 +60,7 @@ public static class ServiceExtensions {
                 .Add("application/vnd.marvel.hateoas+xml");
         });
     }
-    
+
     public static void ConfigureVersioning(this IServiceCollection services) {
         services.AddApiVersioning(options => {
             options.AssumeDefaultVersionWhenUnspecified = true;
@@ -67,8 +68,19 @@ public static class ServiceExtensions {
             options.ReportApiVersions = true;
         });
     }
-    
+
     public static void ConfigureResponseCaching(this IServiceCollection services) {
         services.AddResponseCaching();
+    }
+
+    public static void ConfigureHttpCacheHeaders(this IServiceCollection services) {
+        services.AddHttpCacheHeaders(
+            (expirationOpt) => {
+                expirationOpt.MaxAge = 65;
+                expirationOpt.CacheLocation = CacheLocation.Private;
+            },
+            (validationOpt) => {
+                validationOpt.MustRevalidate = true;
+            });
     }
 }

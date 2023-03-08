@@ -1,7 +1,7 @@
 using System.Reflection;
 using System.Text;
 
-namespace Repository.Extensions.Utility; 
+namespace Repository.Extensions.Utility;
 
 public static class OrderQueryBuilder {
     public static string CreateOrderQuery<T>(string orderByQueryString) {
@@ -20,18 +20,18 @@ public static class OrderQueryBuilder {
             var propertyFromQueryName = param.Split(" ")[0];
             var objectProperty = propertyInfos.FirstOrDefault(
                 pi => pi.Name.Equals(propertyFromQueryName, StringComparison.InvariantCultureIgnoreCase));
-            
-            if(objectProperty is null)
+
+            if (objectProperty is null)
                 continue;
-            
+
             var direction = param.EndsWith(" desc") ? "descending" : "ascending";
-            
+
             orderQueryBuilder.Append($"{objectProperty.Name.ToString()} {direction}, ");
         }
-        
+
         var orderQuery = orderQueryBuilder.ToString().TrimEnd(',', ' ');
-        
+
         return string.IsNullOrWhiteSpace(orderQuery) ? string.Empty : orderQuery;
     }
-    
+
 }

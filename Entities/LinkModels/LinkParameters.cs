@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Shared.RequestFeatures;
 
-namespace Entities.LinkModels; 
+namespace Entities.LinkModels;
 
-public record LinkParameters( ClockworkTasksParameters ClockworkTaskParameters, HttpContext Context);
+public record LinkParameters(ClockworkTasksParameters ClockworkTaskParameters, HttpContext Context);
