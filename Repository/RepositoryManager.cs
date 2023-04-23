@@ -13,9 +13,21 @@ public sealed class RepositoryManager : IRepositoryManager {
         _clockworkTasksRepository = new Lazy<IClockworkTasksRepository>(() => new ClockworkTasksRepository(repositoryContext));
     }
 
-    public IAccountsRepository Accounts => _accountRepository.Value;
-    public IClockworkTasksRepository ClockworkTasks => _clockworkTasksRepository.Value;
+    public IAccountsRepository Accounts {
+        get {
+            return _accountRepository.Value;
+        }
+    }
+    public IClockworkTasksRepository ClockworkTasks {
+        get {
+            return _clockworkTasksRepository.Value;
+        }
+    }
 
-    public void Save() => _repositoryContext.SaveChanges();
-    public async Task SaveAsync() => await _repositoryContext.SaveChangesAsync();
+    public void Save() {
+        _repositoryContext.SaveChanges();
+    }
+    public async Task SaveAsync() {
+        await _repositoryContext.SaveChangesAsync();
+    }
 }

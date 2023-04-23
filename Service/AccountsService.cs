@@ -7,7 +7,7 @@ using Service.Contracts;
 
 namespace Service;
 
-internal sealed class AccountsService : IAccountsService {
+sealed class AccountsService : IAccountsService {
     private readonly IRepositoryManager _repository;
     private readonly ILoggerManager _logger;
     private readonly IMapper _mapper;

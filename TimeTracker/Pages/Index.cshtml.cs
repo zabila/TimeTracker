@@ -1,15 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace TimeTracker.Pages {
-    public class IndexModel : PageModel {
-        private readonly ILogger<IndexModel> _logger;
+namespace TimeTracker.Pages; 
 
-        public IndexModel(ILogger<IndexModel> logger) {
-            _logger = logger;
-        }
+public class IndexModel : PageModel {
+    private readonly ILogger<IndexModel> _logger;
 
-        public void OnGet() {
-        }
+    public IndexModel(ILogger<IndexModel> logger) {
+        _logger = logger;
+    }
+
+    public void OnGet() {
     }
 }

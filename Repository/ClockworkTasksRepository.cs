@@ -11,12 +11,14 @@ public class ClockworkTasksRepository : RepositoryBase<ClockworkTask>, IClockwor
         : base(repositoryContext) {
     }
 
-    public IEnumerable<ClockworkTask> GetAllClockworkTasks(Guid accountId, bool trackChanges)
-        => FindByCondition(ac => ac.AccountId.Equals(accountId), trackChanges).ToList();
+    public IEnumerable<ClockworkTask> GetAllClockworkTasks(Guid accountId, bool trackChanges) {
+        return FindByCondition(ac => ac.AccountId.Equals(accountId), trackChanges).ToList();
+    }
 
-    public ClockworkTask? GetClockworkTask(Guid accountId, Guid id, bool trackChanges)
-        => FindByCondition(ac => ac.Id.Equals(id) && ac.AccountId.Equals(accountId), trackChanges)
+    public ClockworkTask? GetClockworkTask(Guid accountId, Guid id, bool trackChanges) {
+        return FindByCondition(ac => ac.Id.Equals(id) && ac.AccountId.Equals(accountId), trackChanges)
             .SingleOrDefault();
+    }
 
     public async Task<IEnumerable<ClockworkTask>> GetClockworkTasksByIdsAsync(Guid accountId, IEnumerable<Guid> ids, bool trackChanges) {
         var tasksByAccountId = await FindByCondition(ac => ac.AccountId.Equals(accountId), trackChanges).ToListAsync();
@@ -29,7 +31,9 @@ public class ClockworkTasksRepository : RepositoryBase<ClockworkTask>, IClockwor
         Create(clockworkTask);
     }
 
-    public void DeleteClockworkTask(ClockworkTask clockworkTask) => Delete(clockworkTask);
+    public void DeleteClockworkTask(ClockworkTask clockworkTask) {
+        Delete(clockworkTask);
+    }
 
     public IEnumerable<ClockworkTask> GetClockworkTasksByIds(Guid accountId, IEnumerable<Guid> ids, bool trackChanges) {
         var tasksByAccountId = FindByCondition(ac => ac.AccountId.Equals(accountId), trackChanges).ToList();
@@ -51,7 +55,8 @@ public class ClockworkTasksRepository : RepositoryBase<ClockworkTask>, IClockwor
         return new PagedList<ClockworkTask>(tasksByAccountId, count, clockworkTasksParameters.PageNumber, clockworkTasksParameters.PageSize);
     }
 
-    public async Task<ClockworkTask?> GetClockworkTaskAsync(Guid accountId, Guid id, bool trackChanges) =>
-        await FindByCondition(ac => ac.Id.Equals(id) && ac.AccountId.Equals(accountId), trackChanges)
+    public async Task<ClockworkTask?> GetClockworkTaskAsync(Guid accountId, Guid id, bool trackChanges) {
+        return await FindByCondition(ac => ac.Id.Equals(id) && ac.AccountId.Equals(accountId), trackChanges)
             .SingleOrDefaultAsync();
+    }
 }

@@ -15,9 +15,11 @@ namespace TimeTracker.Presentation.Controllers;
 public class ClockworkTasksController : ControllerBase {
     private readonly IServiceManager _service;
 
-    public ClockworkTasksController(IServiceManager serviceManager) => _service = serviceManager;
+    public ClockworkTasksController(IServiceManager serviceManager) {
+        _service = serviceManager;
+    }
 
-    [HttpGet]               
+    [HttpGet]
     [ServiceFilter(typeof(ValidateMediaTypeAttribute))]
     [ResponseCache(Duration = 60)]
     [Authorize]

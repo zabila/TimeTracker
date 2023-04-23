@@ -16,7 +16,7 @@ public class Entity : DynamicObject, IXmlSerializable, IDictionary<string, objec
     }
 
     public override bool TryGetMember(GetMemberBinder binder, out object result) {
-        if (_expando.TryGetValue(binder.Name, out object value)) {
+        if (_expando.TryGetValue(binder.Name, out var value)) {
             result = value;
             return true;
         }

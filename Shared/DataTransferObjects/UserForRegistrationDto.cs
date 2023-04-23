@@ -1,9 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Shared.DataTransferObjects; 
+namespace Shared.DataTransferObjects;
 
-public record UserForRegistrationDto
-{
+public record UserForRegistrationDto {
     public string? FirstName { get; init; }
     public string? LastName { get; init; }
     [Required(ErrorMessage = "Username is required")]

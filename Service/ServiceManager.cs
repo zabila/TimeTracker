@@ -26,7 +26,19 @@ public class ServiceManager : IServiceManager {
         _authenticationService = new Lazy<IAuthenticationService>(() => new AuthenticationService(logger, mapper, userManager, configuration));
     }
 
-    public IAccountsService Accounts => _accountsService.Value;
-    public IClockworkTasksService ClockworkTasks => _clockworkTasksService.Value;
-    public IAuthenticationService Authentication => _authenticationService.Value;
+    public IAccountsService Accounts {
+        get {
+            return _accountsService.Value;
+        }
+    }
+    public IClockworkTasksService ClockworkTasks {
+        get {
+            return _clockworkTasksService.Value;
+        }
+    }
+    public IAuthenticationService Authentication {
+        get {
+            return _authenticationService.Value;
+        }
+    }
 }

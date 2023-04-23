@@ -64,7 +64,7 @@ public class ClockworkLinks : IClockworkLinks {
 
     private List<Link> CreateLinksForClockworkTask(HttpContext httpContext, Guid accountId, Guid id, string fields = "") {
         var links = new List<Link> {
-            new Link(_linkGenerator.GetUriByAction(httpContext, "GetClockworkTasksForAccount",
+            new(_linkGenerator.GetUriByAction(httpContext, "GetClockworkTasksForAccount",
                     values: new {
                         accountId = accountId,
                         id,
@@ -72,14 +72,14 @@ public class ClockworkLinks : IClockworkLinks {
                     }),
                 "self",
                 "GET"),
-            new Link(_linkGenerator.GetUriByAction(httpContext,
+            new(_linkGenerator.GetUriByAction(httpContext,
                     "DeleteClockworkTask", values: new {
                         accountId = accountId,
                         id
                     }),
                 "delete_employee",
                 "DELETE"),
-            new Link(_linkGenerator.GetUriByAction(httpContext,
+            new(_linkGenerator.GetUriByAction(httpContext,
                     "UpdateClockworkTask", values: new {
                         accountId = accountId,
                         id
