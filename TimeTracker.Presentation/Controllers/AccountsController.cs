@@ -1,4 +1,5 @@
 ﻿using Entities.Exceptions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.DataTransferObjects;
@@ -14,12 +15,14 @@ public class AccountsController : ControllerBase {
     public AccountsController(IServiceManager serviceManager) => _service = serviceManager;
 
     [HttpGet(Name = "GetAccounts")]
+    [Authorize]
     public async Task<IActionResult> GetAccounts() {
         var accounts = await _service.Accounts.GetAllAccountsAsync(false);
         return Ok(accounts);
     }
 
     [HttpGet("{id:Guid}", Name = "AccountById")]
+    [Authorize]
     public async Task<IActionResult> GetAccount(Guid id) {
         var account = await _service.Accounts.GetAccountAsync(id, false);
         if (account is null)
@@ -29,6 +32,7 @@ public class AccountsController : ControllerBase {
     }
 
     [HttpPost(Name = "CreateAccount")]
+    [Authorize]
     [ServiceFilter(typeof(ValidationFilterAttribute))]
     public async Task<IActionResult> CreateAccount([FromBody] AccountForCreationDto? account) {
         if (account == null)
@@ -41,12 +45,14 @@ public class AccountsController : ControllerBase {
     }
 
     [HttpDelete("{accountId:guid}")]
+    [Authorize]
     public async Task<IActionResult> DeleteAccount(Guid accountId) {
         await _service.Accounts.DeleteAccountAsync(accountId);
         return NoContent();
     }
 
     [HttpPut("{accountId:guid}")]
+    [Authorize]
     [ServiceFilter(typeof(ValidationFilterAttribute))]
     public async Task<IActionResult> UpdateAccount(Guid accountId, AccountForUpdateDto accountForUpdateDto) {
         await _service.Accounts.UpdateAccountAsync(accountId, accountForUpdateDto, true);
@@ -54,6 +60,7 @@ public class AccountsController : ControllerBase {
     }
 
     [HttpOptions]
+    [Authorize]
     public IActionResult GetAccountOptions() {
         Response.Headers.Add("Allow", "GET,OPTIONS,POST");
         return Ok();

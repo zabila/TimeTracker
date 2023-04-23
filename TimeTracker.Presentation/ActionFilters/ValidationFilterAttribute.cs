@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Diagnostics;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace TimeTracker.Presentation.ActionFilters;
@@ -13,7 +14,10 @@ public class ValidationFilterAttribute : IActionFilter {
         var controller = context.RouteData.Values["controller"];
 
         var param = context.ActionArguments
-            .SingleOrDefault(x => x.Value.ToString()!.Contains("Dto")).Value;
+            .SingleOrDefault(x => {
+                Debug.Assert(x.Value != null, "x.Value != null");
+                return x.Value.ToString()!.Contains("Dto");
+            }).Value;
 
         if (param is null) {
             context.Result = new BadRequestObjectResult("Object is null. Controller: " + controller + ", action: " + action);

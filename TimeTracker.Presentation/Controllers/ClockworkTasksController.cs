@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using Entities.LinkModels;
+using Microsoft.AspNetCore.Authorization;
 using Shared.RequestFeatures;
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
@@ -19,6 +20,7 @@ public class ClockworkTasksController : ControllerBase {
     [HttpGet]               
     [ServiceFilter(typeof(ValidateMediaTypeAttribute))]
     [ResponseCache(Duration = 60)]
+    [Authorize]
     public async Task<IActionResult> GetClockworkTasksForAccount(Guid accountId, [FromQuery] ClockworkTasksParameters clockworkTasksParameters) {
         var linkParameters = new LinkParameters(clockworkTasksParameters, HttpContext);
         var result = await _service.ClockworkTasks.GetAllClockworkTasksAsync(accountId, linkParameters, false);
@@ -27,18 +29,21 @@ public class ClockworkTasksController : ControllerBase {
     }
 
     [HttpGet("{id:Guid}", Name = "GetClockworkForAccount")]
+    [Authorize]
     public async Task<IActionResult> GetClockworkTaskForAccount(Guid accountId, Guid id) {
         var clockworkTask = await _service.ClockworkTasks.GetClockworkTaskAsync(accountId, id, false);
         return Ok(clockworkTask);
     }
 
     [HttpGet("collection/({ids})", Name = "ClockworkTasksCollection")]
+    [Authorize]
     public async Task<IActionResult> GetCollectionByIds(Guid accountId, [ModelBinder(BinderType = typeof(ArrayModelBinder))] IEnumerable<Guid> ids) {
         var tasks = await _service.ClockworkTasks.GetClockworkTasksCollectionAsync(accountId, ids, false);
         return Ok(tasks);
     }
 
     [HttpPost]
+    [Authorize]
     public async Task<IActionResult> CreateClockworkTask(Guid accountId, [FromBody] ClockworkTaskForCreationDto? clockworkTask) {
         if (clockworkTask is null)
             return BadRequest("ClockworkTaskForCreationDto object is null");
@@ -51,12 +56,14 @@ public class ClockworkTasksController : ControllerBase {
     }
 
     [HttpDelete("{id:guid}")]
+    [Authorize]
     public async Task<IActionResult> DeleteClockworkTask(Guid accountId, Guid id) {
         await _service.ClockworkTasks.DeleteClockworkTaskAsync(accountId, id, false);
         return NoContent();
     }
 
     [HttpPut("{id:guid}")]
+    [Authorize]
     public async Task<IActionResult> UpdateClockworkTask(Guid accountId, Guid id, [FromBody] ClockworkTaskForUpdateDto? clockworkTaskForUpdateDto) {
         if (clockworkTaskForUpdateDto is null)
             return BadRequest("ClockworkTaskForUpdateDto object is null");

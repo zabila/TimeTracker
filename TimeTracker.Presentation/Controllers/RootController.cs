@@ -1,4 +1,5 @@
 ﻿using Entities.LinkModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 
@@ -13,6 +14,7 @@ public class RootController : ControllerBase {
 
 
     [HttpGet(Name = "GetRoot")]
+    [Authorize]
     public IActionResult GetRoot([FromHeader(Name = "Accept")] string mediaType) {
         if (mediaType.Contains("application/vnd.marvel.apiroot+json")) {
             var list = new List<Link> {

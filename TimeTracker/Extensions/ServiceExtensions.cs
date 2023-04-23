@@ -1,4 +1,6 @@
-﻿using AspNetCoreRateLimit;
+﻿using System.Text;
+using AspNetCoreRateLimit;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Contracts;
 using Entities.Models;
 using LoggerService;
@@ -8,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Repository;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Service;
 using Service.Contracts;
 
@@ -91,8 +94,8 @@ public static class ServiceExtensions {
         var rateLimitRules = new List<RateLimitRule> {
             new() {
                 Endpoint = "*",
-                Limit = 3,
-                Period = "5m"
+                Limit = 30,
+                Period = "1m"
             }
         };
         services.Configure<IpRateLimitOptions>(opt => {
@@ -117,5 +120,30 @@ public static class ServiceExtensions {
             })
             .AddEntityFrameworkStores<RepositoryContext>()
             .AddDefaultTokenProviders();
+    }
+
+    public static void ConfigureJWT(this IServiceCollection services, IConfiguration configuration) {
+        var jwtSettings = configuration.GetSection("JWTSettings");
+        //var secretKey = Environment.GetEnvironmentVariable("SECRET");
+        var secretKey = configuration.GetSection("SECRET").Value;
+
+        services.AddAuthentication(opt => {
+                    opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                }
+            )
+            .AddJwtBearer(options => {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = jwtSettings["validIssuer"],
+                    ValidAudience = jwtSettings["validAudience"],
+                    IssuerSigningKey = new
+                        SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey ?? throw new InvalidOperationException("Secret key is null")))
+                };
+            });
     }
 }
