@@ -3,4 +3,5 @@
 public interface IServiceManager {
     IAccountsService Accounts { get; }
     IClockworkTasksService ClockworkTasks { get; }
+    IAuthenticationService Authentication { get; }
 }

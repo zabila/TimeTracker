@@ -40,7 +40,7 @@ public class ClockworkLinks : IClockworkLinks {
     }
 
     private bool ShouldGenerateLinks(HttpContext httpContext) {
-        var mediaType = (MediaTypeHeaderValue)httpContext.Items["AcceptHeaderMediaType"];
+        var mediaType = (MediaTypeHeaderValue)httpContext.Items["AcceptHeaderMediaType"]!;
         return mediaType.SubTypeWithoutSuffix.EndsWith("hateoas", StringComparison.InvariantCultureIgnoreCase);
     }
 
