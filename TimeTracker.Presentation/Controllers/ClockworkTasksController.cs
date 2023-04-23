@@ -16,7 +16,7 @@ public class ClockworkTasksController : ControllerBase {
 
     public ClockworkTasksController(IServiceManager serviceManager) => _service = serviceManager;
 
-    [HttpGet]
+    [HttpGet]               
     [ServiceFilter(typeof(ValidateMediaTypeAttribute))]
     [ResponseCache(Duration = 60)]
     public async Task<IActionResult> GetClockworkTasksForAccount(Guid accountId, [FromQuery] ClockworkTasksParameters clockworkTasksParameters) {
