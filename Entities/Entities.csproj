@@ -15,6 +15,7 @@
         <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.5" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.5" />
         <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="7.0.5" />
+        <PackageReference Include="Netjection" Version="1.0.7" />
     </ItemGroup>
 
 </Project>

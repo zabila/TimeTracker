@@ -12,7 +12,9 @@ namespace TimeTracker.Presentation.Controllers;
 public class AccountsController : ControllerBase {
     private readonly IServiceManager _service;
 
-    public AccountsController(IServiceManager serviceManager) => _service = serviceManager;
+    public AccountsController(IServiceManager serviceManager) {
+        _service = serviceManager;
+    }
 
     [HttpGet(Name = "GetAccounts")]
     [Authorize]

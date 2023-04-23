@@ -1,4 +1,5 @@
-﻿using Contracts;
+﻿using System.Diagnostics.CodeAnalysis;
+using Contracts;
 using Entities.LinkModels;
 using Entities.Models;
 using Microsoft.EntityFrameworkCore.Scaffolding;
