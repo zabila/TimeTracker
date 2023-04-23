@@ -10,6 +10,7 @@ using Entities.Models;
 using Entities.Settings;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Service.Contracts;
 using Shared.DataTransferObjects;
@@ -20,19 +21,15 @@ public sealed class AuthenticationService : IAuthenticationService {
     private readonly ILoggerManager _logger;
     private readonly IMapper _mapper;
     private readonly UserManager<User> _userManager;
-    private readonly IConfiguration _configuration;
     private readonly JwtSettings _jwtSettings;
 
     private User? _user;
 
-    public AuthenticationService(ILoggerManager logger, IMapper mapper, UserManager<User> userManager, IConfiguration configuration) {
+    public AuthenticationService(ILoggerManager logger, IMapper mapper, UserManager<User> userManager, IOptions<JwtSettings> jwtSettings) {
         _logger = logger;
         _mapper = mapper;
         _userManager = userManager;
-        _configuration = configuration;
-
-        _jwtSettings = new JwtSettings();
-        _configuration.Bind(nameof(JwtSettings), _jwtSettings);
+        _jwtSettings = jwtSettings.Value;
     }
 
     public async Task<IdentityResult> RegisterUser(UserForRegistrationDto userForRegistration) {

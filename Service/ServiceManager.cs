@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using Contracts;
 using Entities.Models;
+using Entities.Settings;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using Service.Contracts;
 using Service.DataShaping;
 using Shared.DataTransferObjects;
@@ -20,10 +22,11 @@ public class ServiceManager : IServiceManager {
         IDataShaper<ClockworkTaskDto> dataShaper,
         IClockworkLinks employeeLinks,
         UserManager<User> userManager,
-        IConfiguration configuration) {
+        IConfiguration configuration,
+        IOptions<JwtSettings> jwtSettings) {
         _accountsService = new Lazy<IAccountsService>(() => new AccountsService(logger, repository, mapper));
         _clockworkTasksService = new Lazy<IClockworkTasksService>(() => new ClockworkTasksService(logger, repository, mapper, dataShaper, employeeLinks));
-        _authenticationService = new Lazy<IAuthenticationService>(() => new AuthenticationService(logger, mapper, userManager, configuration));
+        _authenticationService = new Lazy<IAuthenticationService>(() => new AuthenticationService(logger, mapper, userManager, jwtSettings));
     }
 
     public IAccountsService Accounts {
