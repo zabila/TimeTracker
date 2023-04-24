@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Runtime.InteropServices;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Repository;
 
@@ -11,8 +12,15 @@ public class RepositoryContextFactory : IDesignTimeDbContextFactory<RepositoryCo
             .AddJsonFile("appsettings.json")
             .Build();
 
+
+        var sSqlConnection = connection.GetConnectionString("sqlConnection");
+        var isOsx = RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
+        if (isOsx) {
+            sSqlConnection = connection.GetConnectionString("sqlConnectionMac");
+        }
+
         var builder = new DbContextOptionsBuilder<RepositoryContext>()
-            .UseSqlServer(connection.GetConnectionString("sqlConnection"),
+            .UseSqlServer(connection.GetConnectionString(sSqlConnection!),
                 b => b.MigrationsAssembly("TimeTracker"));
 
         return new RepositoryContext(builder.Options);

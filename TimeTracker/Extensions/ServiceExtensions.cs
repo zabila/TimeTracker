@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Runtime.InteropServices;
+using System.Text;
 using AspNetCoreRateLimit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Contracts;
@@ -42,8 +43,15 @@ public static class ServiceExtensions {
     }
 
     public static void ConfigureSqlContext(this IServiceCollection services, IConfiguration configuration) {
-        services.AddDbContext<RepositoryContext>(opts =>
-            opts.UseSqlServer(configuration.GetConnectionString("sqlConnection")));
+
+        var isOsx = RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
+        if (isOsx) {
+            services.AddDbContext<RepositoryContext>(opts =>
+                opts.UseSqlServer(configuration.GetConnectionString("sqlConnectionMac")));
+        } else {
+            services.AddDbContext<RepositoryContext>(opts =>
+                opts.UseSqlServer(configuration.GetConnectionString("sqlConnection")));
+        }
     }
 
     public static void ConfigureServiceManager(this IServiceCollection services) {
@@ -156,13 +164,15 @@ public static class ServiceExtensions {
     public static void AddJwtConfiguration(this IServiceCollection services, IConfiguration configuration) {
         services.Configure<JwtSettings>(configuration.GetSection(nameof(JwtSettings)));
     }
-    
+
     public static void ConfigureSwagger(this IServiceCollection services) {
         services.AddSwaggerGen(swagger => {
-            swagger.SwaggerDoc("v1", new() {Title = "TimeTracker", Version = "v1"});
-            
-            swagger.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-            {
+            swagger.SwaggerDoc("v1", new OpenApiInfo {
+                Title = "TimeTracker",
+                Version = "v1"
+            });
+
+            swagger.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme {
                 In = ParameterLocation.Header,
                 Description = "Place to add JWT with Bearer",
                 Name = "Authorization",
@@ -177,7 +187,7 @@ public static class ServiceExtensions {
                             Type = ReferenceType.SecurityScheme,
                             Id = "Bearer"
                         },
-                        Name = "Bearer",
+                        Name = "Bearer"
                     },
                     new List<string>()
                 }
