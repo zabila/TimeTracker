@@ -17,7 +17,6 @@ public class AccountsController : ControllerBase {
     }
 
     [HttpGet(Name = "GetAccounts")]
-    [Authorize]
     public async Task<IActionResult> GetAccounts() {
         var accounts = await _service.Accounts.GetAllAccountsAsync(false);
         return Ok(accounts);

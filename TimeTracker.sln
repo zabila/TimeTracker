@@ -3,23 +3,25 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimeTracker", "TimeTracker\TimeTracker.csproj", "{EDEE31F0-9D54-4FBF-AA6A-D78DF4EC1390}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TimeTracker", "TimeTracker\TimeTracker.csproj", "{EDEE31F0-9D54-4FBF-AA6A-D78DF4EC1390}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contracts", "Contracts\Contracts.csproj", "{F3E61694-25D0-4669-BC50-53D6A4DA3AD3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contracts", "Contracts\Contracts.csproj", "{F3E61694-25D0-4669-BC50-53D6A4DA3AD3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoggerService", "LoggerService\LoggerService.csproj", "{AA592CDA-B52E-4B4B-88C5-7C51AF713B07}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoggerService", "LoggerService\LoggerService.csproj", "{AA592CDA-B52E-4B4B-88C5-7C51AF713B07}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entities", "Entities\Entities.csproj", "{F9DF9BCD-F0F6-41C7-87E1-F3A6134E856B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entities", "Entities\Entities.csproj", "{F9DF9BCD-F0F6-41C7-87E1-F3A6134E856B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repository", "Repository\Repository.csproj", "{C240FEB3-3D64-4DD3-8AA1-412234E30BA5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repository", "Repository\Repository.csproj", "{C240FEB3-3D64-4DD3-8AA1-412234E30BA5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Service.Contracts", "Service.Contracts\Service.Contracts.csproj", "{BF4F3DA6-A8E6-48BB-BF9F-8DB1033B36AC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Service.Contracts", "Service.Contracts\Service.Contracts.csproj", "{BF4F3DA6-A8E6-48BB-BF9F-8DB1033B36AC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Service", "Service\Service.csproj", "{3DF4B179-5C61-451F-B077-F2E6202DEDCB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Service", "Service\Service.csproj", "{3DF4B179-5C61-451F-B077-F2E6202DEDCB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimeTracker.Presentation", "TimeTracker.Presentation\TimeTracker.Presentation.csproj", "{62F3413A-E31D-42B3-8B57-B67F72135C3A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TimeTracker.Presentation", "TimeTracker.Presentation\TimeTracker.Presentation.csproj", "{62F3413A-E31D-42B3-8B57-B67F72135C3A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "Shared\Shared.csproj", "{AE3E6FDD-F7D8-4402-8F3B-F62B5CA79B19}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared", "Shared\Shared.csproj", "{AE3E6FDD-F7D8-4402-8F3B-F62B5CA79B19}"
+EndProject
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "TimeTrackerApp", "TimeTrackerApp\TimeTrackerApp.esproj", "{EB8E470D-B88B-403C-A394-DB78E59A67B7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,6 +65,12 @@ Global
 		{AE3E6FDD-F7D8-4402-8F3B-F62B5CA79B19}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AE3E6FDD-F7D8-4402-8F3B-F62B5CA79B19}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AE3E6FDD-F7D8-4402-8F3B-F62B5CA79B19}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB8E470D-B88B-403C-A394-DB78E59A67B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB8E470D-B88B-403C-A394-DB78E59A67B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB8E470D-B88B-403C-A394-DB78E59A67B7}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{EB8E470D-B88B-403C-A394-DB78E59A67B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB8E470D-B88B-403C-A394-DB78E59A67B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB8E470D-B88B-403C-A394-DB78E59A67B7}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
