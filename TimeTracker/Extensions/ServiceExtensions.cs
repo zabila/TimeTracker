@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc.Formatters;
 using Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using Service;
 using Service.Contracts;
 
@@ -154,5 +155,33 @@ public static class ServiceExtensions {
 
     public static void AddJwtConfiguration(this IServiceCollection services, IConfiguration configuration) {
         services.Configure<JwtSettings>(configuration.GetSection(nameof(JwtSettings)));
+    }
+    
+    public static void ConfigureSwagger(this IServiceCollection services) {
+        services.AddSwaggerGen(swagger => {
+            swagger.SwaggerDoc("v1", new() {Title = "TimeTracker", Version = "v1"});
+            
+            swagger.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+            {
+                In = ParameterLocation.Header,
+                Description = "Place to add JWT with Bearer",
+                Name = "Authorization",
+                Type = SecuritySchemeType.ApiKey,
+                Scheme = "Bearer"
+            });
+
+            swagger.AddSecurityRequirement(new OpenApiSecurityRequirement() {
+                {
+                    new OpenApiSecurityScheme {
+                        Reference = new OpenApiReference {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        },
+                        Name = "Bearer",
+                    },
+                    new List<string>()
+                }
+            });
+        });
     }
 }
