@@ -8,9 +8,18 @@ import {Component} from '@angular/core';
 })
 export class AppComponent {
   public accountDtos?: AccountDto[];
+  http: HttpClient;
 
   constructor(http: HttpClient) {
+    this.http = http;
     http.get<AccountDto[]>('https://localhost:7058/api/accounts').subscribe(result => {
+      this.accountDtos = result;
+      this.accountDtos.forEach(accountDto => console.log(accountDto));
+    }, error => console.error(error));
+  }
+
+  getAccounts() {
+    this.http.get<AccountDto[]>('https://localhost:7058/api/accounts').subscribe(result => {
       this.accountDtos = result;
       this.accountDtos.forEach(accountDto => console.log(accountDto));
     }, error => console.error(error));
