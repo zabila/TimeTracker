@@ -1,24 +1,2 @@
-﻿<h1 id="tableLabel">Time Tracker App</h1>
-
-<button class="btn btn-primary" (click)="getAccounts()" [disabled]="false">Get Accounts</button>
-
-<table *ngIf="accountDtos">
-  <thead>
-  <tr>
-    <th>Id</th>
-    <th>UserName</th>
-    <th>FirstName</th>
-    <th>LastName</th>
-    <th>Type</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr *ngFor="let account of accountDtos">
-    <td>{{ account.id }}</td>
-    <td>{{ account.userName }}</td>
-    <td>{{ account.firstName }}</td>
-    <td>{{ account.lastName }}</td>
-    <td>{{ account.type }}</td>
-  </tr>
-  </tbody>
-</table>
+﻿<app-header></app-header>
+<app-clockworktask></app-clockworktask>

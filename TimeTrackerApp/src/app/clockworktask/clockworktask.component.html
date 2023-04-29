@@ -1,0 +1,18 @@
+<table class="table table-striped table-bordered">
+  <thead>
+  <tr>
+    <th>ClockworkTaskId</th>
+    <th>ClockworkTaskKey</th>
+    <th>StartedDateTime</th>
+    <th>TimeSpentSeconds</th>
+    <th>AccountId</th>
+  </tr>
+  </thead>
+  <tr  *ngFor="let clockworktask of getClockworktasks()">
+    <td>{{clockworktask.clockworkTaskId}}</td>
+    <td>{{clockworktask.clockworkTaskKey}}</td>
+    <td>{{clockworktask.startedDateTime}}</td>
+    <td>{{clockworktask.timeSpentSeconds}}</td>
+    <td>{{clockworktask.accountId}}</td>
+  </tr>
+</table>
